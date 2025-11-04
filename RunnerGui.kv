@@ -3,6 +3,12 @@
 
 <RunnerGui>:    
     BoxLayout: 
+        canvas.before:
+            Color:
+                rgba: 0.4, 0.4, 0.4, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         orientation: 'vertical'
         padding: 3
         spacing: 3
@@ -10,10 +16,70 @@
         BoxLayout:
             orientation: 'horizontal'
             spacing: 3
-            BasePanel:
+            Image:
+                source: 'output/20251104_104429.png'            
             BasePanel:
                 size_hint_x: None
                 width: 200
-        BasePanel:
+        StyledBoxLayout:
             size_hint_y: None
             height: 200
+            BoxLayout:
+                orientation: 'vertical'
+                TextInput:
+                    text: 'Prompt'
+                TextInput:
+            StackLayout:                
+                BoxLayout: #steps
+                    orientation: 'horizontal'
+                    height: self.minimum_height
+                    size_hint_y: None
+                    Label:
+                        text: 'Steps:'   
+                        size: 100, 40
+                        size_hint_x: None
+                    Slider:
+                        height: 40                        
+                        size_hint_y: None
+                    TextInput:
+                        text: '20'
+                        size: 100, self.minimum_height                        
+                        size_hint: None, None
+                Slider: #cfg scale
+                    height: 40
+                    size_hint_y: None
+                    text: 'Cfg scale'
+                TextInput: #width
+                    height: self.minimum_height
+                    size_hint: None, None
+                    text: 'width'                
+                TextInput: #height
+                    height: self.minimum_height
+                    size_hint: None, None
+                    text: 'height'
+                CheckBox: #enable hi res
+                    height: 40
+                    size_hint: None, None
+                    text: 'height'
+                TextInput: #hr scale
+                    height: self.minimum_height
+                    size_hint: None, None
+                    text: 'hr scale'
+                
+            Button:
+                size_hint_x: None
+                width: 200
+
+#"prompt": "",
+#"negative_prompt": "",
+#"steps": 20,
+#"cfg_scale": 4.5,
+#"width": 1280,
+#"height": 720,
+#"enable_hr": false,
+#"hr_scale":2,
+#"hr_upscaler":"Nearest",
+#"hr_negative_prompt":"text,watermark,signature,username",
+#"denoising_strength":0.5,
+#"batch_size": 1,
+#"sampler_name": "Euler a"
