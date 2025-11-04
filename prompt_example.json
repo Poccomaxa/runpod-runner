@@ -1,0 +1,11 @@
+{
+  "input": {
+    "prompt": "masterpiece, best quality, amazing quality, very aesthetic, 4k, high resolution, cat face, fluffy, smiling",
+    "negative_prompt": "cartoon, abstract, glitch, deformed, mutated, ugly, disfigured, long body, lowres, bad anatomy",
+    "steps": 20,
+    "cfg_scale": 4.5,
+    "width": 512,
+    "height": 384,
+    "sampler_name": "Euler a"
+  }
+}
