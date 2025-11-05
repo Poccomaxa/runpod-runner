@@ -7,12 +7,16 @@ from kivy.app import App
 from kivy.properties import ObjectProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 
 class StyledBoxLayout(BoxLayout):
     pass
 
-class RunnerGui(AnchorLayout):
+class RunnerGui(Screen):
+    pass
+
+class Logs(Screen):
     pass
 
 class GenerationPanel(StyledBoxLayout):
@@ -40,9 +44,20 @@ class GenerationPanel(StyledBoxLayout):
 
         print(json.dumps(prompt_data, indent=4))
 
+class AppRoot(ScreenManager):
+    pass
+
 class RunnerGuiApp(App):
+    sm = None
     def build(self):
-        return RunnerGui()
+        Window.bind(on_key_down=self.on_key_down)
+
+        sm = AppRoot()
+        sm.current = "Runner gui screen"
+        return sm
+
+    def on_key_down(self, window, key, scancode, action, mods):
+        pass
 
 if __name__ == '__main__':
     Window.size = (1440, 960)

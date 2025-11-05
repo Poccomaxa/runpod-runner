@@ -15,7 +15,6 @@
         orientation: 'vertical'
         TextInput:
             id: text_prompt
-            text: 'Prompt'
         TextInput:
             id: text_negative_prompt
     StackLayout:
@@ -33,13 +32,13 @@
             value: 4.5
         FloatText: #width
             id: width
-            height: self.minimum_height
+            size: 60, self.minimum_height
             size_hint: None, None
             text: '1024'
             allow_decimal: False
         FloatText: #height
             id: height
-            height: self.minimum_height
+            size: 60, self.minimum_height
             size_hint: None, None
             text: '768'
             allow_decimal: False
@@ -53,8 +52,9 @@
             text: 'hr scale'
 
     Button:
-        size_hint_x: None
-        width: 200
+        size_hint: None, None
+        width: 160
+        height: 45
 
         on_release: root.on_generate_press()
         text: 'Generate'
