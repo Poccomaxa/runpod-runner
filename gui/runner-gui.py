@@ -1,3 +1,4 @@
+import json
 import re
 
 from kivy.app import App
@@ -35,6 +36,7 @@ class TextSlider(BoxLayout):
         if not self.changeGuard:
             self.changeGuard = True
             self.text_input.text = f"{value:.3g}"
+            self.value = value
             self.changeGuard = False
 
     def on_text_changed(self, text):
@@ -57,13 +59,16 @@ class RunnerGui(AnchorLayout):
     pass
 
 class GenerationPanel(StyledBoxLayout):
-    prompt_data = {}
-    def on_cfgscale_changed(self, value):
-        self.prompt_data["cfg_scale"] = value
+    cfg_slider = ObjectProperty(None)
+    steps_slider = ObjectProperty(None)
 
-    def on_steps_changed(self, value):
-        self.prompt_data["steps"] = value
-    pass
+    def on_generate_press(self):
+        prompt_data = {
+            "steps": f"{self.steps_slider.value:.3g}",
+            "cfg_scale": f"{self.cfg_slider.value:.3g}"
+        }
+
+        print(json.dumps(prompt_data, indent=4))
 
 class RunnerGuiApp(App):
     def build(self):

@@ -4,6 +4,8 @@
 <GenerationPanel@StyledBoxLayout>
     size_hint_y: None
     height: 200
+    cfg_slider: cfg_slider
+    steps_slider: steps_slider
     BoxLayout:
         orientation: 'vertical'
         TextInput:
@@ -11,17 +13,17 @@
         TextInput:
     StackLayout:
         TextSlider:
+            id: steps_slider
             title: "Steps:"
             min_value: 1
             max_value: 40
             value: 20
-            on_value: root.on_steps_changed(self.value)
         TextSlider:
+            id: cfg_slider
             title: "Cfg scale:"
             min_value: 1
             max_value: 20
             value: 4.5
-            on_value: root.on_cfgscale_changed(self.value)
         TextInput: #width
             height: self.minimum_height
             size_hint: None, None
@@ -42,3 +44,7 @@
     Button:
         size_hint_x: None
         width: 200
+
+        on_release: root.on_generate_press()
+        Label:
+            text: 'Generate'
