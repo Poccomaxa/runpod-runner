@@ -1,0 +1,41 @@
+#:kivy 2.3.1
+#:include Common.kv
+#:include Generation.kv
+
+<RunnerGui>:    
+    BoxLayout: 
+        canvas.before:
+            Color:
+                rgba: 0.4, 0.4, 0.4, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        orientation: 'vertical'
+        padding: 3
+        spacing: 3
+        
+        BoxLayout:
+            orientation: 'horizontal'
+            spacing: 3
+            Image:
+                source: '../output/20251104_104429.png'
+            BasePanel:
+                size_hint_x: None
+                width: 200
+
+        GenerationPanel:
+
+
+#"prompt": "",
+#"negative_prompt": "",
+#"steps": 20,
+#"cfg_scale": 4.5,
+#"width": 1280,
+#"height": 720,
+#"enable_hr": false,
+#"hr_scale":2,
+#"hr_upscaler":"Nearest",
+#"hr_negative_prompt":"text,watermark,signature,username",
+#"denoising_strength":0.5,
+#"batch_size": 1,
+#"sampler_name": "Euler a"

@@ -1,0 +1,48 @@
+<BasePanel@Widget>:
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+<StyledBoxLayout@BoxLayout>:
+    spacing:3
+    padding:3
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+<FloatText@TextInput>
+    multiline: False
+
+<TextSlider@BoxLayout>
+    title: 'Title:'
+    text_input: text_input
+    min_value: 0
+    max_value: 100
+    orientation: 'horizontal'
+    height: self.minimum_height
+    size_hint_y: None
+    Label:
+        text: root.title
+        size: 100, 40
+        size_hint_x: None
+    Slider:
+        id: slider
+        height: 40
+        value: float(text_input.text if text_input.text != '' else 5)
+        size_hint_y: None
+        min: root.min_value
+        max: root.max_value
+    FloatText:
+        id: text_input
+        multiline: False
+        text: f"{slider.value:.3g}"
+        size: 100, self.minimum_height
+        size_hint: None, None

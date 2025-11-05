@@ -1,0 +1,41 @@
+#:kivy 2.3.1
+#:include Common.kv
+
+<GenerationPanel@StyledBoxLayout>
+
+    size_hint_y: None
+    height: 200
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            text: 'Prompt'
+        TextInput:
+    StackLayout:
+        TextSlider:
+            title: "Steps:"
+            min_value: 1
+            max_value: 40
+        TextSlider:
+            title: "Cfg scale:"
+            min_value: 1
+            max_value: 20
+        TextInput: #width
+            height: self.minimum_height
+            size_hint: None, None
+            text: 'width'
+        TextInput: #height
+            height: self.minimum_height
+            size_hint: None, None
+            text: 'height'
+        CheckBox: #enable hi res
+            height: 40
+            size_hint: None, None
+            text: 'height'
+        TextInput: #hr scale
+            height: self.minimum_height
+            size_hint: None, None
+            text: 'hr scale'
+
+    Button:
+        size_hint_x: None
+        width: 200
