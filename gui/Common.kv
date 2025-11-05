@@ -23,9 +23,14 @@
 
 <TextSlider@BoxLayout>
     title: 'Title:'
-    text_input: text_input
     min_value: 0
     max_value: 100
+    value: 0
+
+    #Exposing children
+    slider: slider
+    text_input: text_input
+
     orientation: 'horizontal'
     height: self.minimum_height
     size_hint_y: None
@@ -36,13 +41,15 @@
     Slider:
         id: slider
         height: 40
-        value: float(text_input.text if text_input.text != '' else 5)
+        value: root.value
+        on_value: root.on_slider_value(self.value)
         size_hint_y: None
         min: root.min_value
         max: root.max_value
     FloatText:
         id: text_input
         multiline: False
-        text: f"{slider.value:.3g}"
+        allow_decimal: True
+        on_text: root.on_text_changed(self.text)
         size: 100, self.minimum_height
         size_hint: None, None
