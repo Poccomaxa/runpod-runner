@@ -3,3 +3,4 @@ cache.json
 output/
 raw_responses/
 .idea/
+*.pyc

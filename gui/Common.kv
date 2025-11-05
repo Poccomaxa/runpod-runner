@@ -34,16 +34,19 @@
     orientation: 'horizontal'
     height: self.minimum_height
     size_hint_y: None
-    Label:
-        text: root.title
-        size: 100, 40
-        size_hint_x: None
+    AnchorLayout:
+        size: 80, 30
+        size_hint: None, None
+        anchor_x: 'right'
+        Label:
+            text: root.title
+            size: self.texture_size
+            size_hint: None, None
     Slider:
         id: slider
-        height: 40
+        cursor_size: 18, 18
         value: root.value
         on_value: root.on_slider_value(self.value)
-        size_hint_y: None
         min: root.min_value
         max: root.max_value
     FloatText:
@@ -51,5 +54,6 @@
         multiline: False
         allow_decimal: True
         on_text: root.on_text_changed(self.text)
-        size: 100, self.minimum_height
+        size: 60, self.minimum_height
         size_hint: None, None
+

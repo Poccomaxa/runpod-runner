@@ -2,15 +2,22 @@
 #:include Common.kv
 
 <GenerationPanel@StyledBoxLayout>
+    #Layouting
     size_hint_y: None
     height: 200
+
+    #Exposing widgets
     cfg_slider: cfg_slider
     steps_slider: steps_slider
+    text_prompt: text_prompt
+    text_negative_prompt: text_negative_prompt
     BoxLayout:
         orientation: 'vertical'
         TextInput:
+            id: text_prompt
             text: 'Prompt'
         TextInput:
+            id: text_negative_prompt
     StackLayout:
         TextSlider:
             id: steps_slider
@@ -24,14 +31,18 @@
             min_value: 1
             max_value: 20
             value: 4.5
-        TextInput: #width
+        FloatText: #width
+            id: width
             height: self.minimum_height
             size_hint: None, None
-            text: 'width'
-        TextInput: #height
+            text: '1024'
+            allow_decimal: False
+        FloatText: #height
+            id: height
             height: self.minimum_height
             size_hint: None, None
-            text: 'height'
+            text: '768'
+            allow_decimal: False
         CheckBox: #enable hi res
             height: 40
             size_hint: None, None
@@ -46,5 +57,4 @@
         width: 200
 
         on_release: root.on_generate_press()
-        Label:
-            text: 'Generate'
+        text: 'Generate'
