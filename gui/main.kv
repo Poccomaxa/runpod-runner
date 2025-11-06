@@ -45,9 +45,16 @@
             BasePanel:
                 size_hint_x: None
                 width: 200
+        TabbedPanel:
+            default_tab: generation_tab
 
-        GenerationPanel:
-            id: generation_panel
+            size_hint_y: None
+            height: 250
+            TabbedPanelItem:
+                id: generation_tab
+                text: 'Generation'
+                GenerationPanel:
+                    id: generation_panel
 
 <AppRoot>:
     main_screen: main
