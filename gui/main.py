@@ -1,5 +1,8 @@
 import json
 import os
+import re
+
+from kivy.uix.label import Label
 
 import text_slider
 import float_text
@@ -37,6 +40,25 @@ class LogsScreen(Screen):
 
 class StyledBoxLayout(BoxLayout):
     pass
+
+class PromptsItem(Label):
+    pass
+
+class PromptsPanel(BoxLayout):
+    prompt_list = ObjectProperty(None)
+
+    def load_prompts(self):
+        files = os.listdir('../prompts')
+        pat = re.compile('.*\.json')
+        self.prompt_list.clear_widgets()
+        for file in files:
+            if pat.fullmatch(file):
+                new_label = PromptsItem(text = file)
+
+                self.prompt_list.add_widget(new_label)
+
+    def on_parent(self, widget, parent):
+        self.load_prompts()
 
 
 class GenerationPanel(StyledBoxLayout):
