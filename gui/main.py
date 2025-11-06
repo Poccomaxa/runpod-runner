@@ -1,7 +1,7 @@
 import json
 
-import TextSlider
-import FloatText
+import text_slider
+import float_text
 
 from kivy.app import App
 from kivy.properties import ObjectProperty
@@ -46,11 +46,14 @@ class GenerationPanel(StyledBoxLayout):
         print(json.dumps(prompt_data, indent=4))
 
 class AppRoot(ScreenManager):
-    pass
-
-class RunnerGuiApp(App):
-    sm = None
     current_screen_index = 0
+
+    def cycle_screens(self):
+        self.current_screen_index = (self.current_screen_index + 1) % len(self.screen_names)
+        self.current = self.screen_names[self.current_screen_index]
+
+class MainApp(App):
+    sm = None
     code_to_name = {v: k for k, v in Keyboard.keycodes.items()}
 
     def build(self):
@@ -60,9 +63,8 @@ class RunnerGuiApp(App):
 
     def on_key_down(self, window, key, scancode, codepoint, modifier):
         if self.code_to_name[key] == "`":
-            self.current_screen_index = (self.current_screen_index + 1) % len(self.sm.screen_names)
-            self.sm.current = self.sm.screen_names[self.current_screen_index]
+            self.sm.cycle_screens()
 
 if __name__ == "__main__":
     Window.size = (1440, 960)
-    RunnerGuiApp().run()
+    MainApp().run()

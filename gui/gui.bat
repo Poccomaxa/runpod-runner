@@ -1,1 +1,1 @@
-python runner-gui.py
+python main.py
