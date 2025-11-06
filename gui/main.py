@@ -24,7 +24,10 @@ class LogsScreen(Screen):
 
     def add_line(self, lineBytes):
         line = lineBytes.decode("utf-8")
-        self.log_lines.append(line.replace("\n", ""))
+        line = line.replace("\n", "")
+        line = line.replace("\r", "")
+        line = "> " + line
+        self.log_lines.append(line)
         self.log_lines = self.log_lines[-self.max_lines:]
         self.logs.text = "\n".join(self.log_lines)
 
@@ -77,7 +80,7 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec("python", "run_and_produce_image.py",
-                                                                    "prompt_example.json", cwd="..", stdout=asyncio.subprocess.PIPE,
+                                                                    "-h", cwd="..", stdout=asyncio.subprocess.PIPE,
                                                                     stderr=asyncio.subprocess.STDOUT)
         async for line in self.generation_exec.stdout:
             self.logs_screen.add_line(line)

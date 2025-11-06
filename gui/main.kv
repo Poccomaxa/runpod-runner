@@ -17,9 +17,10 @@
         padding: 5
         Label:
             id: logs
-            size_hint: None, None
-            size: self.texture_size
-            text: "Logs\nBe\nHere"
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            text: "Here\nBe\nText"
             font_size: 18
             valign: 'bottom'
 
