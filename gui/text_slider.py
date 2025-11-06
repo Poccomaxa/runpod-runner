@@ -12,7 +12,7 @@ class TextSlider(BoxLayout):
     def on_slider_value(self, value):
         if not self.changeGuard:
             self.changeGuard = True
-            self.text_input.text = f"{value:.3g}"
+            self.text_input.text = f'{value:.3g}'
             self.value = value
             self.changeGuard = False
 
@@ -23,7 +23,7 @@ class TextSlider(BoxLayout):
                 float_value = float(text)
                 float_value_clamped = max(self.min_value, min(self.max_value, float_value))
                 if float_value != float_value_clamped:
-                    self.text_input.text = f"{float_value_clamped:.3g}"
+                    self.text_input.text = f'{float_value_clamped:.3g}'
                 self.value = float_value_clamped
                 self.changeGuard = False
         except Exception:

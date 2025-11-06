@@ -1,6 +1,9 @@
 secret
 cache.json
-output/
-raw_responses/
+
 .idea/
 *.pyc
+
+prompts/
+output/
+raw_responses/

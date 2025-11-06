@@ -23,18 +23,16 @@ class LogsScreen(Screen):
     max_lines = 100
 
     def add_byte_line(self, line_bytes):
-        line = line_bytes.decode("utf-8")
+        line = line_bytes.decode('utf-8')
         self.add_line(line)
 
     def add_line(self, line):
-        line = line.replace("\n", "")
-        line = line.replace("\r", "")
-        line = "> " + line
+        line = line.replace('\n', '')
+        line = line.replace('\r', '')
+        line = '> ' + line
         self.log_lines.append(line)
         self.log_lines = self.log_lines[-self.max_lines:]
-        self.logs.text = "\n".join(self.log_lines)
-
-    pass
+        self.logs.text = '\n'.join(self.log_lines)
 
 
 class StyledBoxLayout(BoxLayout):
@@ -52,19 +50,19 @@ class GenerationPanel(StyledBoxLayout):
 
     def on_generate_press(self):
         prompt_data = {
-            "prompt": self.text_prompt.text,
-            "negative_prompt": self.text_negative_prompt.text,
-            "steps": f"{self.steps_slider.value:.3g}",
-            "cfg_scale": f"{self.cfg_slider.value:.3g}",
-            "width": "",
-            "height": "",
-            "enable_hr": False,
-            "hr_scale": "",
-            "hr_upscale": "",
-            "hr_negative_prompt": "",
-            "denoising_strength": 0.5,
-            "batch_size": 1,
-            "sampler_name": "Euler a"
+            'prompt': self.text_prompt.text,
+            'negative_prompt': self.text_negative_prompt.text,
+            'steps': f'{self.steps_slider.value:.3g}',
+            'cfg_scale': f'{self.cfg_slider.value:.3g}',
+            'width': '',
+            'height': '',
+            'enable_hr': False,
+            'hr_scale': '',
+            'hr_upscale': '',
+            'hr_negative_prompt': '',
+            'denoising_strength': 0.5,
+            'batch_size': 1,
+            'sampler_name': 'Euler a'
         }
 
         print(json.dumps(prompt_data, indent=4))
@@ -84,7 +82,7 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec(
-            "python", "run_and_produce_image.py", "-h", cwd=os.path.abspath(".."),
+            'python', 'run_and_produce_image.py', '-h', cwd=os.path.abspath('..'),
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
 
         async for line in self.generation_exec.stdout:
@@ -94,14 +92,14 @@ class AppRoot(ScreenManager):
 
     def on_prompt_ready(self, *args):
         self.switch_to_logs()
-        self.logs_screen.add_line("Starting generation script...")
+        self.logs_screen.add_line('Starting generation script...')
         self.user_switched = False
         asyncio.get_event_loop().create_task(self.run_generation())
 
     def on_generation_script_finished(self):
         if not self.user_switched:
             self.switch_to_main()
-        self.logs_screen.add_line("Generation script finished!")
+        self.logs_screen.add_line('Generation script finished!')
 
     def on_cycle_screens(self):
         self.user_switched = True
@@ -131,11 +129,11 @@ class MainApp(App):
         return self.sm
 
     def on_key_down(self, window, key, scancode, codepoint, modifier):
-        if self.code_to_name[key] == "`":
+        if self.code_to_name[key] == '`':
             self.sm.on_cycle_screens()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     Window.size = (1440, 960)
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(MainApp().async_run("asyncio"))
+    loop.run_until_complete(MainApp().async_run('asyncio'))
