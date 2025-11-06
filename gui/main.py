@@ -6,12 +6,10 @@ import float_text
 
 from kivy.app import App
 from kivy.properties import ObjectProperty
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
-from kivy.clock import Clock
 import asyncio
 
 class MainScreen(Screen):
@@ -75,9 +73,6 @@ class AppRoot(ScreenManager):
     logs_screen = ObjectProperty(None)
     generation_exec = None
 
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec("python", "run_and_produce_image.py",
                                                                     "-h", cwd=os.path.abspath(".."), stdout=asyncio.subprocess.PIPE,
@@ -85,9 +80,8 @@ class AppRoot(ScreenManager):
         async for line in self.generation_exec.stdout:
             self.logs_screen.add_line(line)
 
-
     def on_prompt_ready(self, *args):
-        self.loop.create_task(self.run_generation())
+        asyncio.get_event_loop().create_task(self.run_generation())
 
     def cycle_screens(self):
         self.current_screen_index = (self.current_screen_index + 1) % len(self.screen_names)
@@ -95,12 +89,6 @@ class AppRoot(ScreenManager):
 
     def on_parent(self, widget, parent):
         self.main_screen.generation_panel.bind(on_prompt_ready=self.on_prompt_ready)
-        Clock.schedule_interval(self.on_update, 0)
-
-    def on_update(self, dt):
-        self.loop.call_soon(self.loop.stop)
-        self.loop.run_forever()
-        pass
 
 class MainApp(App):
     sm = None
@@ -117,4 +105,5 @@ class MainApp(App):
 
 if __name__ == "__main__":
     Window.size = (1440, 960)
-    MainApp().run()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(MainApp().async_run("asyncio"))
