@@ -9,14 +9,15 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
+from kivy.core.window import Keyboard
+
+class MainScreen(Screen):
+    pass
+
+class LogsScreen(Screen):
+    pass
 
 class StyledBoxLayout(BoxLayout):
-    pass
-
-class RunnerGui(Screen):
-    pass
-
-class Logs(Screen):
     pass
 
 class GenerationPanel(StyledBoxLayout):
@@ -49,16 +50,19 @@ class AppRoot(ScreenManager):
 
 class RunnerGuiApp(App):
     sm = None
+    current_screen_index = 0
+    code_to_name = {v: k for k, v in Keyboard.keycodes.items()}
+
     def build(self):
         Window.bind(on_key_down=self.on_key_down)
+        self.sm = AppRoot()
+        return self.sm
 
-        sm = AppRoot()
-        sm.current = "Runner gui screen"
-        return sm
+    def on_key_down(self, window, key, scancode, codepoint, modifier):
+        if self.code_to_name[key] == "`":
+            self.current_screen_index = (self.current_screen_index + 1) % len(self.sm.screen_names)
+            self.sm.current = self.sm.screen_names[self.current_screen_index]
 
-    def on_key_down(self, window, key, scancode, action, mods):
-        pass
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     Window.size = (1440, 960)
     RunnerGuiApp().run()

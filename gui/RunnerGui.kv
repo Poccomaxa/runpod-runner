@@ -3,18 +3,26 @@
 #:include Generation.kv
 #:include Styles.kv
 
-<Logs>:
-    canvas.before:
-        Color:
-            rgba: 0.1, 0.1, 0.1, 1
-        Rectangle:
-            pos: self.pos
-            size: self.size
-    Label:
-        text: "Logs\nBe\nHere"
-        valign: 'bottom'
+<LogsScreen>:
 
-<RunnerGui>:    
+    AnchorLayout:
+        canvas.before:
+            Color:
+                rgba: 0.1, 0.1, 0.1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        anchor_x: 'left'
+        anchor_y: 'bottom'
+        padding: 5
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            text: "Logs\nBe\nHere"
+            font_size: 18
+            valign: 'bottom'
+
+<MainScreen>:
     BoxLayout: 
         canvas.before:
             Color:
@@ -38,7 +46,7 @@
         GenerationPanel:
 
 <AppRoot>:
-    RunnerGui:
-        name: "Runner gui screen"
-    Logs:
-        name: "Logs screen"
+    MainScreen:
+        name: "main"
+    LogsScreen:
+        name: "logs"
