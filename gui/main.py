@@ -80,7 +80,7 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec("python", "run_and_produce_image.py",
-                                                                    "-h", cwd="..", stdout=asyncio.subprocess.PIPE,
+                                                                    "-h", cwd=os.path.abspath(".."), stdout=asyncio.subprocess.PIPE,
                                                                     stderr=asyncio.subprocess.STDOUT)
         async for line in self.generation_exec.stdout:
             self.logs_screen.add_line(line)
