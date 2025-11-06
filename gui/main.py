@@ -1,4 +1,5 @@
 import json
+import os
 
 import text_slider
 import float_text
@@ -11,12 +12,22 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
 from kivy.clock import Clock
-import subprocess
+import asyncio
 
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
 
 class LogsScreen(Screen):
+    logs = ObjectProperty(None)
+    log_lines = []
+    max_lines = 100
+
+    def add_line(self, lineBytes):
+        line = lineBytes.decode("utf-8")
+        self.log_lines.append(line.replace("\n", ""))
+        self.log_lines = self.log_lines[-self.max_lines:]
+        self.logs.text = "\n".join(self.log_lines)
+
     pass
 
 class StyledBoxLayout(BoxLayout):
@@ -61,9 +72,19 @@ class AppRoot(ScreenManager):
     logs_screen = ObjectProperty(None)
     generation_exec = None
 
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    async def run_generation(self):
+        self.generation_exec = await asyncio.create_subprocess_exec("python", "run_and_produce_image.py",
+                                                                    "prompt_example.json", cwd="..", stdout=asyncio.subprocess.PIPE,
+                                                                    stderr=asyncio.subprocess.STDOUT)
+        async for line in self.generation_exec.stdout:
+            self.logs_screen.add_line(line)
+
+
     def on_prompt_ready(self, *args):
-        self.generation_exec = subprocess.Popen(["python", "run_and_produce_image.py", "prompt_example.json"],
-                                             cwd = "..", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        self.loop.create_task(self.run_generation())
 
     def cycle_screens(self):
         self.current_screen_index = (self.current_screen_index + 1) % len(self.screen_names)
@@ -74,11 +95,8 @@ class AppRoot(ScreenManager):
         Clock.schedule_interval(self.on_update, 0)
 
     def on_update(self, dt):
-        if self.generation_exec is None:
-            return
-        if self.generation_exec.poll() is None:
-            for line in self.generation_exec.stdout:
-                print(line)
+        self.loop.call_soon(self.loop.stop)
+        self.loop.run_forever()
         pass
 
 class MainApp(App):

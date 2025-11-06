@@ -4,7 +4,7 @@
 #:include styles.kv
 
 <LogsScreen>:
-
+    logs: logs
     AnchorLayout:
         canvas.before:
             Color:
@@ -16,6 +16,7 @@
         anchor_y: 'bottom'
         padding: 5
         Label:
+            id: logs
             size_hint: None, None
             size: self.texture_size
             text: "Logs\nBe\nHere"
