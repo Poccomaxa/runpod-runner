@@ -10,9 +10,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
+from kivy.clock import Clock
+import subprocess
 
 class MainScreen(Screen):
-    pass
+    generation_panel = ObjectProperty(None)
 
 class LogsScreen(Screen):
     pass
@@ -25,6 +27,9 @@ class GenerationPanel(StyledBoxLayout):
     steps_slider = ObjectProperty(None)
     text_prompt = ObjectProperty(None)
     text_negative_prompt = ObjectProperty(None)
+
+    def on_prompt_ready(self, *args):
+        pass
 
     def on_generate_press(self):
         prompt_data = {
@@ -45,12 +50,36 @@ class GenerationPanel(StyledBoxLayout):
 
         print(json.dumps(prompt_data, indent=4))
 
+        self.dispatch('on_prompt_ready')
+
+    def on_parent(self, widget, parent):
+        self.register_event_type('on_prompt_ready')
+
 class AppRoot(ScreenManager):
     current_screen_index = 0
+    main_screen = ObjectProperty(None)
+    logs_screen = ObjectProperty(None)
+    generation_exec = None
+
+    def on_prompt_ready(self, *args):
+        self.generation_exec = subprocess.Popen(["python", "run_and_produce_image.py", "prompt_example.json"],
+                                             cwd = "..", stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
 
     def cycle_screens(self):
         self.current_screen_index = (self.current_screen_index + 1) % len(self.screen_names)
         self.current = self.screen_names[self.current_screen_index]
+
+    def on_parent(self, widget, parent):
+        self.main_screen.generation_panel.bind(on_prompt_ready=self.on_prompt_ready)
+        Clock.schedule_interval(self.on_update, 0)
+
+    def on_update(self, dt):
+        if self.generation_exec is None:
+            return
+        if self.generation_exec.poll() is None:
+            for line in self.generation_exec.stdout:
+                print(line)
+        pass
 
 class MainApp(App):
     sm = None

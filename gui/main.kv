@@ -23,6 +23,7 @@
             valign: 'bottom'
 
 <MainScreen>:
+    generation_panel: generation_panel
     BoxLayout: 
         canvas.before:
             Color:
@@ -44,9 +45,15 @@
                 width: 200
 
         GenerationPanel:
+            id: generation_panel
 
 <AppRoot>:
+    main_screen: main
+    logs_screen: logs
+
     MainScreen:
+        id: main
         name: "main"
     LogsScreen:
+        id: logs
         name: "logs"
