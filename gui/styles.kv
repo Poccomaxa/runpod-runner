@@ -8,3 +8,28 @@
     font_name: "JetBrainsMono-Regular"
     foreground_color: 1, 1, 1, 1
     background_color: 0.2, 0.2, 0.2, 1
+
+<AppBG@Widget>
+    canvas.before:
+        Color:
+            rgba: 0.4, 0.4, 0.4, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<BasePanelBG@Widget>
+    canvas.before:
+        Color:
+            rgba: 0.2, 0.2, 0.2, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [5]
+
+<LogsScreenBG@Widget>
+    canvas.before:
+        Color:
+            rgba: 0.1, 0.1, 0.1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size

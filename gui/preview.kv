@@ -1,0 +1,20 @@
+#:kivy 2.2.1
+#:include styles.kv
+
+<ScatterLayoutPanel@ScatterLayout+BasePanelBG>
+<ImagesPanel@ScrollView+BasePanelBG>
+
+<Preview@BoxLayout>:
+    orientation: 'horizontal'
+    spacing: 3
+    file_list: file_list
+    AnchorLayout:
+        ScatterLayout:
+            Button:
+                text:'sisi'
+                size_hint: None, None
+                size: 300, 100
+    ImagesPanel:
+        id: file_list
+        size_hint_x: None
+        width: 200

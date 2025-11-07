@@ -3,16 +3,13 @@
 #:include generation.kv
 #:include styles.kv
 #:include prompts.kv
+#:include preview.kv
+
+<LogsPanel@AnchorLayout+LogsScreenBG>
 
 <LogsScreen>:
     logs: logs
-    AnchorLayout:
-        canvas.before:
-            Color:
-                rgba: 0.1, 0.1, 0.1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    LogsPanel:
         anchor_x: 'left'
         anchor_y: 'bottom'
         padding: 5
@@ -25,30 +22,19 @@
             font_size: 18
             valign: 'bottom'
 
+<MainPanel@BoxLayout+AppBG>
+
 <MainScreen>:
     generation_panel: generation_panel
-    BoxLayout: 
-        canvas.before:
-            Color:
-                rgba: 0.4, 0.4, 0.4, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
+    MainPanel:
         orientation: 'vertical'
         padding: 3
         spacing: 3
         
-        BoxLayout:
-            orientation: 'horizontal'
-            spacing: 3
-            BasePanel:
-                width: 200
-            BasePanel:
-                size_hint_x: None
-                width: 200
+        Preview:
         TabbedPanel:
             default_tab: generation_tab
-
+            background_color: 1, 1, 1, 0
             size_hint_y: None
             height: 250
             TabbedPanelItem:

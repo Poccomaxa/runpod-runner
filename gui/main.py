@@ -2,10 +2,12 @@ import json
 import os
 import re
 
+from kivy import Config
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
 
-import text_slider
-import float_text
+import gui.text_slider
+import gui.float_text
 
 from kivy.app import App
 from kivy.properties import ObjectProperty
@@ -15,9 +17,12 @@ from kivy.core.window import Window
 from kivy.core.window import Keyboard
 import asyncio
 
+from gui.styles import BasePanelBG
+
 
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
+    preview_panel = ObjectProperty(None)
 
 
 class LogsScreen(Screen):
@@ -38,11 +43,9 @@ class LogsScreen(Screen):
         self.logs.text = '\n'.join(self.log_lines)
 
 
-class StyledBoxLayout(BoxLayout):
-    pass
-
 class PromptsItem(Label):
     pass
+
 
 class PromptsPanel(BoxLayout):
     prompt_list = ObjectProperty(None)
@@ -53,7 +56,7 @@ class PromptsPanel(BoxLayout):
         self.prompt_list.clear_widgets()
         for file in files:
             if pat.fullmatch(file):
-                new_label = PromptsItem(text = file)
+                new_label = PromptsItem(text=file)
 
                 self.prompt_list.add_widget(new_label)
 
@@ -61,7 +64,11 @@ class PromptsPanel(BoxLayout):
         self.load_prompts()
 
 
-class GenerationPanel(StyledBoxLayout):
+class Preview(BoxLayout):
+    file_list = ObjectProperty(None)
+    pass
+
+class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
     steps_slider = ObjectProperty(None)
     text_prompt = ObjectProperty(None)
@@ -156,6 +163,11 @@ class MainApp(App):
 
 
 if __name__ == '__main__':
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
+
+    Window.top = 100
+    Window.left = 1950
     Window.size = (1440, 960)
+
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MainApp().async_run('asyncio'))

@@ -1,25 +1,5 @@
 #:kivy 2.2.1
 
-<BasePanel@Widget>:
-    canvas.before:
-        Color:
-            rgba: 0.2, 0.2, 0.2, 1
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [5]
-
-<StyledBoxLayout@BoxLayout>:
-    spacing:3
-    padding:3
-    canvas.before:
-        Color:
-            rgba: 0.2, 0.2, 0.2, 1
-        RoundedRectangle:
-            pos: self.pos
-            size: self.size
-            radius: [5]
-
 <FloatText@TextInput>
     multiline: False
 

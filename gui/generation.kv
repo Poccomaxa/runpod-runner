@@ -1,12 +1,16 @@
 #:kivy 2.2.1
 #:include common.kv
+#:include styles.kv
 
-<GenerationPanel@StyledBoxLayout>
+<GenerationPanel@BoxLayout+BasePanelBG>
     #Exposing widgets
     cfg_slider: cfg_slider
     steps_slider: steps_slider
     text_prompt: text_prompt
     text_negative_prompt: text_negative_prompt
+
+    spacing:3
+    padding:3
     BoxLayout:
         orientation: 'vertical'
         TextInput:
