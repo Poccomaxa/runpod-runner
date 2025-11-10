@@ -67,8 +67,9 @@ class PromptsPanel(BoxLayout):
         self.load_prompts()
 
 
-class Thumbnail(AnchorLayout):
+class Thumbnail(BoxLayout):
     file_name = ObjectProperty(None)
+    image_thumb = ObjectProperty(None)
 
 
 class Preview(BoxLayout):
@@ -81,6 +82,7 @@ class Preview(BoxLayout):
         for imagePath in image_paths:
             new_thumbnail = Thumbnail()
             new_thumbnail.file_name.text = imagePath
+            new_thumbnail.image_thumb.source = "../output/" + imagePath
             self.file_list.add_widget(new_thumbnail)
 
         pass

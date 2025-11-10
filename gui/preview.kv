@@ -4,14 +4,22 @@
 <ImagePreviewPanel@AnchorLayout+BasePanelBG>
 <ImagesPanel@ScrollView+BasePanelBG>
 
-<Thumbnail@AnchorLayout>
+<Thumbnail@BoxLayout>
     file_name: file_name
+    image_thumb: image_thumb
     size_hint_y: None
-    height: file_name.height
+    height: self.minimum_height
+    orientation: 'vertical'
+    Image:
+        id: image_thumb
+        fit_mode: 'contain'
+        size_hint_y: None
+        width: 200
+
     Label:
         id: file_name
         text: ''
-        size_hint: None, None
+        size_hint_y: None
         size: self.texture_size
 
 <Preview@BoxLayout>:
