@@ -3,7 +3,9 @@ import os
 import re
 
 from kivy import Config
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.label import Label
+from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 
 import gui.text_slider
@@ -49,6 +51,7 @@ class PromptsItem(Label):
 
 class PromptsPanel(BoxLayout):
     prompt_list = ObjectProperty(None)
+    print(prompt_list, "prompts")
 
     def load_prompts(self):
         files = os.listdir('../prompts')
@@ -64,9 +67,24 @@ class PromptsPanel(BoxLayout):
         self.load_prompts()
 
 
+class Thumbnail(AnchorLayout):
+    file_name = ObjectProperty(None)
+
+
 class Preview(BoxLayout):
     file_list = ObjectProperty(None)
-    pass
+
+    # print(file_list, "file list")
+
+    def on_kv_post(self, base_widget):
+        image_paths = os.listdir('../output')
+        for imagePath in image_paths:
+            new_thumbnail = Thumbnail()
+            new_thumbnail.file_name.text = imagePath
+            self.file_list.add_widget(new_thumbnail)
+
+        pass
+
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)

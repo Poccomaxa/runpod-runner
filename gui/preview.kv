@@ -1,20 +1,38 @@
 #:kivy 2.2.1
 #:include styles.kv
 
-<ScatterLayoutPanel@ScatterLayout+BasePanelBG>
+<ImagePreviewPanel@AnchorLayout+BasePanelBG>
 <ImagesPanel@ScrollView+BasePanelBG>
+
+<Thumbnail@AnchorLayout>
+    file_name: file_name
+    size_hint_y: None
+    height: file_name.height
+    Label:
+        id: file_name
+        text: ''
+        size_hint: None, None
+        size: self.texture_size
 
 <Preview@BoxLayout>:
     orientation: 'horizontal'
     spacing: 3
     file_list: file_list
-    AnchorLayout:
+
+    ImagePreviewPanel:
         ScatterLayout:
             Button:
                 text:'sisi'
                 size_hint: None, None
                 size: 300, 100
+            Button:
+                text: 'pipi'
+                size_hint: None, None
+                size: 100, 300
     ImagesPanel:
-        id: file_list
         size_hint_x: None
         width: 200
+        BoxLayout:
+            id: file_list
+            orientation: 'vertical'
+
