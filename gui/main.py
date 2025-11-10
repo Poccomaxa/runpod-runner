@@ -4,9 +4,11 @@ import re
 
 from kivy import Config
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.label import Label
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
+from pkg_resources import file_ns_handler
 
 import gui.text_slider
 import gui.float_text
@@ -67,9 +69,12 @@ class PromptsPanel(BoxLayout):
         self.load_prompts()
 
 
-class Thumbnail(BoxLayout):
+class Thumbnail(ButtonBehavior, BoxLayout):
     file_name = ObjectProperty(None)
     image_thumb = ObjectProperty(None)
+
+    def on_press(self):
+        pass
 
 
 class Preview(BoxLayout):

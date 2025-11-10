@@ -4,12 +4,13 @@
 <ImagePreviewPanel@AnchorLayout+BasePanelBG>
 <ImagesPanel@ScrollView+BasePanelBG>
 
-<Thumbnail@BoxLayout>
+<Thumbnail@ButtonBehavior+BoxLayout>
     file_name: file_name
     image_thumb: image_thumb
     size_hint_y: None
     height: self.minimum_height
     orientation: 'vertical'
+
     Image:
         id: image_thumb
         fit_mode: 'contain'
@@ -28,6 +29,14 @@
     file_list: file_list
 
     ImagePreviewPanel:
+        canvas.before:
+            ScissorPush:
+                x: self.pos[0]
+                y: self.pos[1]
+                width: self.size[0]
+                height: self.size[1]
+        canvas.after:
+            ScissorPop:
         ScatterLayout:
             Button:
                 text:'sisi'
@@ -37,6 +46,7 @@
                 text: 'pipi'
                 size_hint: None, None
                 size: 100, 300
+
     ImagesPanel:
         do_scroll_y: True
         size_hint_x: None
