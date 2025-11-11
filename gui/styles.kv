@@ -1,20 +1,23 @@
 #:kivy 2.2.1
 #:set selected_color (0.94, 0.8, 0.43, 1.)
 #:set default_color (1., 1., 1., 1.)
+#:set main_bkg_color (0.4, 0.4, 0.4, 1)
+#:set panel_bkg_color (0.2, 0.2, 0.2, 1)
+#:set logs_bkg_color (0.1, 0.1, 0.1, 1)
 
 <Label>:
     font_name: "JetBrainsMono-Regular"
-    color: 1, 1, 1, 1
+    color: default_color
 
 <TextInput>:
     font_name: "JetBrainsMono-Regular"
-    foreground_color: 1, 1, 1, 1
-    background_color: 0.2, 0.2, 0.2, 1
+    foreground_color: default_color
+    background_color: panel_bkg_color
 
 <AppBG@Widget>
     canvas.before:
         Color:
-            rgba: 0.4, 0.4, 0.4, 1
+            rgba: main_bkg_color
         Rectangle:
             pos: self.pos
             size: self.size
@@ -22,7 +25,7 @@
 <BasePanelBG@Widget>
     canvas.before:
         Color:
-            rgba: 0.2, 0.2, 0.2, 1
+            rgba: panel_bkg_color
         RoundedRectangle:
             pos: self.pos
             size: self.size
@@ -31,7 +34,7 @@
 <LogsScreenBG@Widget>
     canvas.before:
         Color:
-            rgba: 0.1, 0.1, 0.1, 1
+            rgba: logs_bkg_color
         Rectangle:
             pos: self.pos
             size: self.size
