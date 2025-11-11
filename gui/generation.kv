@@ -3,7 +3,9 @@
 #:include styles.kv
 
 <DropDownPanel@BoxLayout+BasePanelBG>
-    orientation: vertical
+    orientation: 'vertical'
+    size_hint: None, None
+    size: self.minimum_width, self.minimum_height
 
 
 <GenerationPanel@BoxLayout+BasePanelBG>

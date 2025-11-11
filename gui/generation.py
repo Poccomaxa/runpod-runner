@@ -53,17 +53,19 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     height_text = ObjectProperty(None)
     highres_checkbox = ObjectProperty(None)
     sampler_button = ObjectProperty(None)
-    sampler_container = DropDownPanel()
-    sampler_dropdown = DropDown(container=sampler_container)
+    sampler_container = None
+    sampler_dropdown = None
 
     def on_kv_post(self, base_widget):
+        self.sampler_container = DropDownPanel()
+        self.sampler_dropdown = DropDown()
         for sampling_method in sampling_methods:
             new_entry = DropDownLine(
                 text=sampling_method
             )
-            #new_entry.bind(on_press=)
             self.sampler_container.add_widget(new_entry)
 
+        self.sampler_dropdown.add_widget(self.sampler_container)
         self.sampler_button.bind(on_press=self.sampler_dropdown.open)
         self.register_event_type('on_prompt_ready')
 
