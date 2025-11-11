@@ -8,11 +8,11 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
 
-from gui.generation import GenerationPanel
-from gui.text_slider import TextSlider
-from gui.float_text import FloatText
-from gui.preview import Preview
-from gui.prompts import PromptsPanel
+from generation import GenerationPanel
+from text_slider import TextSlider
+from float_text import FloatText
+from preview import Preview
+from prompts import PromptsPanel
 
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)

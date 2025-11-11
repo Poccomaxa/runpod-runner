@@ -5,7 +5,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
-from gui.styles import BasePanelBG
+from styles import BasePanelBG
 
 
 class DropDownLine(ButtonBehavior, Label):
