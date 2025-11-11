@@ -21,6 +21,13 @@ from gui.text_slider import TextSlider
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
     preview_panel = ObjectProperty(None)
+    prompts_panel = ObjectProperty(None)
+
+    def on_kv_post(self, base_widget):
+        self.prompts_panel.bind(on_load_requested=self.on_load_requested)
+
+    def on_load_requested(self, widget, filename: str):
+        self.generation_panel.load_from_file(filename)
 
 
 class LogsScreen(Screen):
@@ -62,7 +69,11 @@ class PromptsPanel(BoxLayout):
                 self.prompt_list.add_widget(new_label)
 
     def on_kv_post(self, base_widget):
+        self.register_event_type('on_load_requested')
         self.load_prompts()
+
+    def on_load_requested(self, to_load: str):
+        pass
 
     def on_prompt_selected(self, widget):
         if self.selected_item is not None:
@@ -70,6 +81,10 @@ class PromptsPanel(BoxLayout):
 
         self.selected_item = widget
         self.selected_item.selected = True
+
+    def on_load_pressed(self):
+        if self.selected_item is not None:
+            self.dispatch('on_load_requested', self.selected_item.text)
 
 
 class GenerationPanel(BoxLayout, BasePanelBG):
@@ -104,6 +119,13 @@ class GenerationPanel(BoxLayout, BasePanelBG):
 
     def on_kv_post(self, base_widget):
         self.register_event_type('on_prompt_ready')
+
+    def load_from_file(self, filename: str):
+        pass
+
+    def load_from_json(self, json_data):
+        pass
+
 
 
 class AppRoot(ScreenManager):
