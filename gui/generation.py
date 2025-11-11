@@ -3,6 +3,7 @@ import json
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 
 from styles import BasePanelBG
@@ -40,6 +41,8 @@ upscaler_methods = [
 class DropDownLine(ButtonBehavior, Label):
     pass
 
+class DropDownPanel(BoxLayout, BasePanelBG):
+    pass
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
@@ -49,6 +52,20 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     width_text = ObjectProperty(None)
     height_text = ObjectProperty(None)
     highres_checkbox = ObjectProperty(None)
+    sampler_button = ObjectProperty(None)
+    sampler_container = DropDownPanel()
+    sampler_dropdown = DropDown(container=sampler_container)
+
+    def on_kv_post(self, base_widget):
+        for sampling_method in sampling_methods:
+            new_entry = DropDownLine(
+                text=sampling_method
+            )
+            #new_entry.bind(on_press=)
+            self.sampler_container.add_widget(new_entry)
+
+        self.sampler_button.bind(on_press=self.sampler_dropdown.open)
+        self.register_event_type('on_prompt_ready')
 
     def on_prompt_ready(self, *args):
         pass
@@ -77,8 +94,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
 
         self.dispatch('on_prompt_ready')
 
-    def on_kv_post(self, base_widget):
-        self.register_event_type('on_prompt_ready')
+
 
     def load_from_file(self, filename: str):
         with open("../prompts/" + filename, 'rb') as prompt_file:

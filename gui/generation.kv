@@ -2,6 +2,10 @@
 #:include common.kv
 #:include styles.kv
 
+<DropDownPanel@BoxLayout+BasePanelBG>
+    orientation: vertical
+
+
 <GenerationPanel@BoxLayout+BasePanelBG>
     #Exposing widgets
     cfg_slider: cfg_slider
@@ -11,6 +15,7 @@
     width_text: width_text
     height_text: height_text
     highres_checkbox: highres_checkbox
+    sampler_button: sampler_button
 
     spacing:3
     padding:3
@@ -34,6 +39,7 @@
             max_value: 20
             value: 4.5
         Button: #sampler_name
+            id: sampler_button
             size: 100, 30
             size_hint: None, None
             text: 'Euler a'

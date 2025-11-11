@@ -39,14 +39,14 @@ class Preview(BoxLayout):
 
     def on_kv_post(self, base_widget):
         Clock.schedule_interval(self.on_update, 0)
-
-        image_paths = os.listdir('../output')
-        for imagePath in image_paths:
-            new_thumbnail = Thumbnail()
-            new_thumbnail.file_name.text = imagePath
-            new_thumbnail.image_thumb.source = "../output/" + imagePath
-            new_thumbnail.bind(on_press=self.on_image_selected)
-            self.file_list.add_widget(new_thumbnail)
+        if os.path.exists('../output'):
+            image_paths = os.listdir('../output')
+            for imagePath in image_paths:
+                new_thumbnail = Thumbnail()
+                new_thumbnail.file_name.text = imagePath
+                new_thumbnail.image_thumb.source = "../output/" + imagePath
+                new_thumbnail.bind(on_press=self.on_image_selected)
+                self.file_list.add_widget(new_thumbnail)
 
     def on_image_selected(self, widget):
         self.scatter_container.scale = 1
