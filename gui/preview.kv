@@ -27,8 +27,12 @@
     orientation: 'horizontal'
     spacing: 3
     file_list: file_list
+    big_image: big_image
+    scatter_container: scatter_container
+    image_panel: image_panel
 
     ImagePreviewPanel:
+        id: image_panel
         canvas.before:
             ScissorPush:
                 x: self.pos[0]
@@ -38,14 +42,17 @@
         canvas.after:
             ScissorPop:
         ScatterLayout:
-            Button:
-                text:'sisi'
-                size_hint: None, None
-                size: 300, 100
-            Button:
-                text: 'pipi'
-                size_hint: None, None
-                size: 100, 300
+            id: scatter_container
+            size: big_image.texture_size
+            size_hint: None, None
+#            canvas.before:
+#                Color:
+#                    rgba: 0, 0, 0, 1
+#                Line:
+#                    rectangle: 0, 0, self.size[0], self.size[1]
+#                    width: 2
+            Image:
+                id: big_image
 
     ImagesPanel:
         do_scroll_y: True
