@@ -1,22 +1,18 @@
-import json
 import os
-import re
 import asyncio
 
 from kivy import Config
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.label import Label
 from kivy.app import App
-from kivy.properties import ObjectProperty, BooleanProperty
-from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
 
-from gui.styles import BasePanelBG
-from gui.preview import Preview, Thumbnail
+from gui.generation import GenerationPanel
 from gui.text_slider import TextSlider
-
+from gui.float_text import FloatText
+from gui.preview import Preview
+from gui.prompts import PromptsPanel
 
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
@@ -46,105 +42,6 @@ class LogsScreen(Screen):
         self.log_lines.append(line)
         self.log_lines = self.log_lines[-self.max_lines:]
         self.logs.text = '\n'.join(self.log_lines)
-
-
-class PromptsItem(ButtonBehavior, Label):
-    selected = BooleanProperty(False)
-    pass
-
-
-class PromptsPanel(BoxLayout):
-    prompt_list = ObjectProperty(None)
-    selected_item = None
-
-    def load_prompts(self):
-        files = os.listdir('../prompts')
-        pat = re.compile('.*\.json')
-        self.prompt_list.clear_widgets()
-        for file in files:
-            if pat.fullmatch(file):
-                new_label = PromptsItem(text=file)
-                new_label.bind(on_press=self.on_prompt_selected)
-
-                self.prompt_list.add_widget(new_label)
-
-    def on_kv_post(self, base_widget):
-        self.register_event_type('on_load_requested')
-        self.load_prompts()
-
-    def on_load_requested(self, to_load: str):
-        pass
-
-    def on_prompt_selected(self, widget):
-        if self.selected_item is not None:
-            self.selected_item.selected = False
-
-        self.selected_item = widget
-        self.selected_item.selected = True
-
-    def on_load_pressed(self):
-        if self.selected_item is not None:
-            self.dispatch('on_load_requested', self.selected_item.text)
-
-class DropDownLine(ButtonBehavior, Label):
-    pass
-
-class GenerationPanel(BoxLayout, BasePanelBG):
-    cfg_slider = ObjectProperty(None)
-    steps_slider = ObjectProperty(None)
-    text_prompt = ObjectProperty(None)
-    text_negative_prompt = ObjectProperty(None)
-    width_text = ObjectProperty(None)
-    height_text = ObjectProperty(None)
-    highres_checkbox = ObjectProperty(None)
-
-    def on_prompt_ready(self, *args):
-        pass
-
-    def on_generate_press(self):
-        prompt_data = {
-            'prompt': self.text_prompt.text,
-            'negative_prompt': self.text_negative_prompt.text,
-            'steps': f'{self.steps_slider.value:.3g}',
-            'cfg_scale': f'{self.cfg_slider.value:.3g}',
-            'width': '',
-            'height': '',
-            'enable_hr': False,
-            'hr_scale': '',
-            'hr_upscaler': '',
-            'hr_negative_prompt': '',
-            'denoising_strength': 0.5,
-            'batch_size': 1,
-            'sampler_name': 'Euler a'
-        }
-        full_data = {
-            'input': prompt_data
-        }
-
-        print(json.dumps(full_data, indent=4))
-
-        self.dispatch('on_prompt_ready')
-
-    def on_kv_post(self, base_widget):
-        self.register_event_type('on_prompt_ready')
-
-    def load_from_file(self, filename: str):
-        with open("../prompts/" + filename, 'rb') as prompt_file:
-            data = json.load(prompt_file)
-            self.load_from_json(data)
-
-    def load_from_json(self, json_data):
-        print(json_data)
-        prompt_data = json_data['input']
-        self.text_prompt.text = prompt_data['prompt']
-        self.text_negative_prompt.text = prompt_data['negative_prompt']
-        self.steps_slider.value = prompt_data['steps']
-        self.cfg_slider.value = prompt_data['cfg_scale']
-        self.width_text.text = str(prompt_data['width'])
-        self.height_text.text = str(prompt_data['height'])
-        self.highres_checkbox.active = prompt_data['enable_hr']
-        pass
-
 
 
 class AppRoot(ScreenManager):
