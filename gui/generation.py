@@ -7,6 +7,35 @@ from kivy.uix.label import Label
 
 from styles import BasePanelBG
 
+sampling_methods = [
+    'DPM++ 2M',
+    'DPM++ SDE',
+    'DPM++ 2M SDE',
+    'DPM++ 2M SDE Heun',
+    'DPM++ 2S a',
+    'DPM++ 3M SDE',
+    'Euler a',
+    'Euler',
+    'LMS',
+    'Heun',
+    'DPM2',
+    'DPM2 a',
+    'DPM fast',
+    'DPM adaptive',
+    'Restart'
+]
+
+upscaler_methods = [
+    'Latent',
+    'Latent (antialiased)',
+    'Latent (bicubic)',
+    'Latent (bicubic antialiased)',
+    'Latent (nearest)',
+    'Latent (nearest-exact)',
+    'None',
+    'Lanczos',
+    'Nearest'
+]
 
 class DropDownLine(ButtonBehavior, Label):
     pass
