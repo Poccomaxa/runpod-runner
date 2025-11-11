@@ -8,6 +8,9 @@
     steps_slider: steps_slider
     text_prompt: text_prompt
     text_negative_prompt: text_negative_prompt
+    width_text: width_text
+    height_text: height_text
+    highres_checkbox: highres_checkbox
 
     spacing:3
     padding:3
@@ -30,26 +33,31 @@
             min_value: 1
             max_value: 20
             value: 4.5
+        Button: #sampler_name
+            size: 100, 30
+            size_hint: None, None
+            text: 'Euler a'
         FloatText: #width
-            id: width
+            id: width_text
             size: 60, self.minimum_height
             size_hint: None, None
             text: '1024'
             allow_decimal: False
         FloatText: #height
-            id: height
+            id: height_text
             size: 60, self.minimum_height
             size_hint: None, None
             text: '768'
             allow_decimal: False
         CheckBox: #enable hi res
+            id: highres_checkbox
             height: 40
             size_hint: None, None
             text: 'height'
-        TextInput: #hr scale
+        FloatText: #hr scale
             height: self.minimum_height
             size_hint: None, None
-            text: 'hr scale'
+            text: '2'
 
     Button:
         size_hint: None, None
