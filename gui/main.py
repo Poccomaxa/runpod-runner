@@ -3,9 +3,11 @@ import os
 import re
 import asyncio
 
+from kivy import Config
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.label import Label
 from kivy.app import App
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, BooleanProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
@@ -39,13 +41,14 @@ class LogsScreen(Screen):
         self.logs.text = '\n'.join(self.log_lines)
 
 
-class PromptsItem(Label):
+class PromptsItem(ButtonBehavior, Label):
+    selected = BooleanProperty(False)
     pass
 
 
 class PromptsPanel(BoxLayout):
     prompt_list = ObjectProperty(None)
-    print(prompt_list, "prompts")
+    selected_item = None
 
     def load_prompts(self):
         files = os.listdir('../prompts')
@@ -54,11 +57,19 @@ class PromptsPanel(BoxLayout):
         for file in files:
             if pat.fullmatch(file):
                 new_label = PromptsItem(text=file)
+                new_label.bind(on_press=self.on_prompt_selected)
 
                 self.prompt_list.add_widget(new_label)
 
-    def on_parent(self, widget, parent):
+    def on_kv_post(self, base_widget):
         self.load_prompts()
+
+    def on_prompt_selected(self, widget):
+        if self.selected_item is not None:
+            self.selected_item.selected = False
+
+        self.selected_item = widget
+        self.selected_item.selected = True
 
 
 class GenerationPanel(BoxLayout, BasePanelBG):
@@ -91,7 +102,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
 
         self.dispatch('on_prompt_ready')
 
-    def on_parent(self, widget, parent):
+    def on_kv_post(self, base_widget):
         self.register_event_type('on_prompt_ready')
 
 
@@ -137,7 +148,7 @@ class AppRoot(ScreenManager):
     def switch_to_main(self):
         self.current = 'main'
 
-    def on_parent(self, widget, parent):
+    def on_kv_post(self, base_widget):
         self.main_screen.generation_panel.bind(on_prompt_ready=self.on_prompt_ready)
 
 
@@ -158,7 +169,7 @@ class MainApp(App):
 
 
 if __name__ == '__main__':
-    # Config.set('input', 'mouse', 'mouse,disable_multitouch')
+    Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     Window.top = 100
     Window.left = 1950

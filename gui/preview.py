@@ -80,7 +80,7 @@ class Preview(BoxLayout):
         desired_delta = (align_in_frame(cnt_min_point[0], cnt_max_point[0], img_min_point[0], img_max_point[0]),
                          align_in_frame(cnt_min_point[1], cnt_max_point[1], img_min_point[1], img_max_point[1]))
 
-        actual_delta = (lerp(img_min_point[0], img_min_point[0] + desired_delta[0], 0.7),
-                        lerp(img_min_point[1], img_min_point[1] + desired_delta[1], 0.7))
+        actual_delta = (lerp(img_min_point[0], img_min_point[0] + desired_delta[0], 0.5),
+                        lerp(img_min_point[1], img_min_point[1] + desired_delta[1], 0.5))
 
         self.scatter_container.pos = self.image_panel.to_parent(*actual_delta, True)

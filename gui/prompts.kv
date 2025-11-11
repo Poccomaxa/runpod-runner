@@ -1,9 +1,11 @@
 #:kivy 2.2.1
 #:include common.kv
 
-<PromptsItem@Label>
+<PromptsItem@ButtonBehavior+Label>
+    selected: False
     size_hint: None, None
     size: self.texture_size
+    color: selected_color if self.selected else default_color
 
 <PromptsPanel@BoxLayout>
     orientation: 'horizontal'
