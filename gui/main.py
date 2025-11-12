@@ -6,6 +6,8 @@ from idlelib.browser import file_open
 from kivy import Config
 from kivy.app import App
 from kivy.properties import ObjectProperty
+from kivy.uix.label import Label
+from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
@@ -15,6 +17,7 @@ from text_slider import TextSlider  # noqa
 from float_text import FloatText  # noqa
 from preview import Preview  # noqa
 from prompts import PromptsPanel  # noqa
+from settings import GlobalSettingsPanel #noqa
 
 
 class MainScreen(Screen):
@@ -22,6 +25,7 @@ class MainScreen(Screen):
     preview_panel = ObjectProperty(None)
     prompts_panel = ObjectProperty(None)
     tabbed_panel = ObjectProperty(None)
+    global_settings_panel = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -54,6 +58,8 @@ class LogsScreen(Screen):
         self.log_lines = self.log_lines[-self.max_lines:]
         self.logs.text = '\n'.join(self.log_lines)
 
+class CommonPopup(Popup):
+    pass
 
 class AppRoot(ScreenManager):
     main_screen = ObjectProperty(None)
@@ -65,9 +71,9 @@ class AppRoot(ScreenManager):
         self.generation_exec = None
         self.user_switched = False
 
-    async def run_generation(self):
+    async def run_generation(self, endpoint):
         self.generation_exec = await asyncio.create_subprocess_exec(
-            'python', 'run_and_produce_image.py', '../prompts/last_prompt.json.tmp', cwd=os.path.abspath('..'),
+            'python', 'run_and_produce_image.py', 'prompts/last_prompt.json.tmp', '-p', endpoint, cwd=os.path.abspath('..'),
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
 
         async for line in self.generation_exec.stdout:
@@ -76,20 +82,30 @@ class AppRoot(ScreenManager):
         self.on_generation_script_finished()
 
     def on_prompt_ready(self, widget, json_data):
+        print('Prompt ready')
+        print('json.dumps(json_data, indent=4)')
+
+        endpoint = self.main_screen.global_settings_panel.api_endpoint_text.text
+        if endpoint == '':
+            popup = CommonPopup(title='No api endpoint', auto_dismiss=False)
+            popup.text='You should provide your api endpoint for the first run in the settings tab. Later it will load last one automatically'
+            popup.open()
+            return
+
         self.switch_to_logs()
         self.logs_screen.add_line('Starting generation script...')
         self.user_switched = False
 
-        print(json.dumps(json_data, indent=4))
         with open('../prompts/last_prompt.json.tmp', 'w') as prompt_file:
             json.dump(json_data, prompt_file, indent=4)
 
-        asyncio.get_event_loop().create_task(self.run_generation())
+        asyncio.get_event_loop().create_task(self.run_generation(endpoint))
 
     def on_generation_script_finished(self):
         if not self.user_switched:
             self.switch_to_main()
         self.logs_screen.add_line('Generation script finished!')
+        self.main_screen.preview_panel.reload_images()
 
     def on_cycle_screens(self):
         self.user_switched = True

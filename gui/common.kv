@@ -1,5 +1,21 @@
 #:kivy 2.2.1
 
+<CommonPopup@Popup>
+    size_hint: None, None
+    size: 500, 300
+    text: 'Text goes here'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.text
+            text_size: self.width, None
+            halign: 'center'
+        Button:
+            size_hint_y: None
+            height: 50
+            text: 'Ok'
+            on_press: root.dismiss()
+
 <TextDropdown@Button>
 
 <DropDownLine@ButtonBehavior+Label>

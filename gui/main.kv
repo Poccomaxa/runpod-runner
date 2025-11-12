@@ -4,6 +4,7 @@
 #:include styles.kv
 #:include prompts.kv
 #:include preview.kv
+#:include settings.kv
 
 <LogsPanel@AnchorLayout+LogsScreenBG>
 
@@ -29,12 +30,12 @@
     preview_panel: preview_panel
     prompts_panel: prompts_panel
     tabbed_panel: tabbed_panel
+    global_settings_panel: global_settings_panel
 
     MainPanel:
         orientation: 'vertical'
         padding: 3
         spacing: 3
-        
         Preview:
             id: preview_panel
         TabbedPanel:
@@ -56,6 +57,8 @@
             TabbedPanelItem:
                 id: settings_tab
                 text: 'Settings'
+                GlobalSettingsPanel
+                    id: global_settings_panel
 
 
 <AppRoot>:

@@ -1,0 +1,14 @@
+#:kivy 2.2.1
+#:include common.kv
+#:include styles.kv
+
+<GlobalSettingsPanel@StackLayout+BasePanelBG>
+    api_endpoint_text: api_endpoint_text
+
+    orientation: 'lr-tb'
+    padding: 3
+    spacing: 3
+    TextInput:
+        id: api_endpoint_text
+        size_hint: None, None
+        size: 150, self.minimum_height

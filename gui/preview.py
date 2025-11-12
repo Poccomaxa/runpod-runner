@@ -47,6 +47,10 @@ class Preview(BoxLayout):
 
     def on_kv_post(self, base_widget):
         Clock.schedule_interval(self.on_update, 0)
+        self.reload_images()
+
+    def reload_images(self):
+        self.file_list.clear_widgets()
         if os.path.exists('../output'):
             image_paths = os.listdir('../output')
             for imagePath in image_paths:

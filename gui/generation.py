@@ -38,15 +38,6 @@ upscaler_methods = [
     'Nearest'
 ]
 
-
-class DropDownLine(ButtonBehavior, Label):
-    pass
-
-
-class DropDownPanel(BoxLayout, BasePanelBG):
-    pass
-
-
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
     steps_slider = ObjectProperty(None)
