@@ -7,6 +7,9 @@ from kivy.uix.textinput import TextInput
 class FloatText(TextInput):
     allow_decimal = BooleanProperty(False)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     pat = re.compile('[^0-9]')
     def insert_text(self, substring, from_undo=False):
         pat = self.pat

@@ -53,8 +53,11 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     height_text = ObjectProperty(None)
     highres_checkbox = ObjectProperty(None)
     sampler_button = ObjectProperty(None)
-    sampler_container = None
-    sampler_dropdown = None
+
+    def __init__(self, **kwargs):
+        self.sampler_container = None
+        self.sampler_dropdown = None
+        super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
         self.sampler_container = DropDownPanel()

@@ -5,8 +5,10 @@ from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
+
 def lerp(a: float, b: float, t: float) -> float:
     return (1 - t) * a + t * b
+
 
 def align_in_frame(cnt_min: float, cnt_max: float, img_min: float, img_max: float) -> float:
     img_size = img_max - img_min
@@ -27,6 +29,9 @@ class Thumbnail(ButtonBehavior, BoxLayout):
     file_name = ObjectProperty(None)
     image_thumb = ObjectProperty(None)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def on_press(self):
         pass
 
@@ -36,6 +41,9 @@ class Preview(BoxLayout):
     big_image = ObjectProperty(None)
     scatter_container = ObjectProperty(None)
     image_panel = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
         Clock.schedule_interval(self.on_update, 0)

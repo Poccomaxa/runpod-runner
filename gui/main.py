@@ -8,16 +8,20 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
 
-from generation import GenerationPanel # noqa
-from text_slider import TextSlider # noqa
-from float_text import FloatText # noqa
-from preview import Preview # noqa
-from prompts import PromptsPanel # noqa
+from generation import GenerationPanel  # noqa
+from text_slider import TextSlider  # noqa
+from float_text import FloatText  # noqa
+from preview import Preview  # noqa
+from prompts import PromptsPanel  # noqa
+
 
 class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
     preview_panel = ObjectProperty(None)
     prompts_panel = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
         self.prompts_panel.bind(on_load_requested=self.on_load_requested)
@@ -28,8 +32,11 @@ class MainScreen(Screen):
 
 class LogsScreen(Screen):
     logs = ObjectProperty(None)
-    log_lines = []
-    max_lines = 100
+
+    def __init__(self, **kwargs):
+        self.log_lines = []
+        self.max_lines = 100
+        super().__init__(**kwargs)
 
     def add_byte_line(self, line_bytes):
         line = line_bytes.decode('utf-8')
@@ -45,11 +52,14 @@ class LogsScreen(Screen):
 
 
 class AppRoot(ScreenManager):
-    current_screen_index = 0
     main_screen = ObjectProperty(None)
     logs_screen = ObjectProperty(None)
-    generation_exec = None
-    user_switched = False
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.current_screen_index = 0
+        self.generation_exec = None
+        self.user_switched = False
 
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec(
@@ -91,8 +101,11 @@ class AppRoot(ScreenManager):
 
 
 class MainApp(App):
-    sm = None
     code_to_name = {v: k for k, v in Keyboard.keycodes.items()}
+
+    def __init__(self, **kwargs):
+        self.sm = None
+        super().__init__(**kwargs)
 
     def build(self):
         Window.bind(on_key_down=self.on_key_down)
@@ -100,9 +113,9 @@ class MainApp(App):
         return self.sm
 
     def on_key_down(self, window, key, scancode, codepoint, modifier):
-        if self.code_to_name[key] == '`':
+        if MainApp.code_to_name[key] == '`':
             self.sm.on_cycle_screens()
-        if self.code_to_name[key] == 'spacebar':
+        if MainApp.code_to_name[key] == 'spacebar':
             self.sm.main_screen.preview_panel.reset_scale()
 
 

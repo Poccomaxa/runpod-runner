@@ -7,7 +7,10 @@ class TextSlider(BoxLayout):
     value = NumericProperty(0)
     min_value = NumericProperty(0)
     max_value = NumericProperty(0)
-    changeGuard = False
+
+    def __init__(self, **kwargs):
+        self.changeGuard = False
+        super().__init__(**kwargs)
 
     def on_slider_value(self, value):
         if not self.changeGuard:

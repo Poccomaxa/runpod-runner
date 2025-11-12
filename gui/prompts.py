@@ -9,12 +9,16 @@ from kivy.uix.label import Label
 
 class PromptsItem(ButtonBehavior, Label):
     selected = BooleanProperty(False)
-    pass
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
 
 class PromptsPanel(BoxLayout):
     prompt_list = ObjectProperty(None)
-    selected_item = None
+
+    def __init__(self, **kwargs):
+        self.selected_item = None
+        super().__init__(**kwargs)
 
     def load_prompts(self):
         files = os.listdir('../prompts')
