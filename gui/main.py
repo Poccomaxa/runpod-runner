@@ -1,5 +1,7 @@
+import json
 import os
 import asyncio
+from idlelib.browser import file_open
 
 from kivy import Config
 from kivy.app import App
@@ -65,7 +67,7 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self):
         self.generation_exec = await asyncio.create_subprocess_exec(
-            'python', 'run_and_produce_image.py', '-h', cwd=os.path.abspath('..'),
+            'python', 'run_and_produce_image.py', '../prompts/last_prompt.json.tmp', cwd=os.path.abspath('..'),
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
 
         async for line in self.generation_exec.stdout:
@@ -73,10 +75,15 @@ class AppRoot(ScreenManager):
 
         self.on_generation_script_finished()
 
-    def on_prompt_ready(self, *args):
+    def on_prompt_ready(self, widget, json_data):
         self.switch_to_logs()
         self.logs_screen.add_line('Starting generation script...')
         self.user_switched = False
+
+        print(json.dumps(json_data, indent=4))
+        with open('../prompts/last_prompt.json.tmp', 'w') as prompt_file:
+            json.dump(json_data, prompt_file, indent=4)
+
         asyncio.get_event_loop().create_task(self.run_generation())
 
     def on_generation_script_finished(self):
@@ -89,14 +96,20 @@ class AppRoot(ScreenManager):
         self.cycle_screens()
 
     def cycle_screens(self):
-        self.current_screen_index = (self.current_screen_index + 1) % len(self.screen_names)
-        self.current = self.screen_names[self.current_screen_index]
+        self.switch_to_index((self.current_screen_index + 1) % len(self.screen_names))
 
     def switch_to_logs(self):
-        self.current = 'logs'
+        self.switch_to_name('logs')
 
     def switch_to_main(self):
-        self.current = 'main'
+        self.switch_to_name('main')
+
+    def switch_to_name(self, name: str):
+        self.switch_to_index(self.screen_names.index(name))
+
+    def switch_to_index(self, index: int):
+        self.current_screen_index = index
+        self.current = self.screen_names[self.current_screen_index]
 
     def on_kv_post(self, base_widget):
         self.main_screen.generation_panel.bind(on_prompt_ready=self.on_prompt_ready)
@@ -125,7 +138,7 @@ if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     Window.top = 100
-    Window.left = 1980
+    Window.left = 100
     Window.size = (1440, 960)
 
     loop = asyncio.get_event_loop()

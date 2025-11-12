@@ -92,9 +92,9 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'input': prompt_data
         }
 
-        print(json.dumps(full_data, indent=4))
 
-        #self.dispatch('on_prompt_ready')
+
+        self.dispatch('on_prompt_ready', full_data)
 
     def load_from_file(self, filename: str):
         with open("../prompts/" + filename, 'rb') as prompt_file:
