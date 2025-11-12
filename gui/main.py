@@ -19,6 +19,7 @@ class MainScreen(Screen):
     generation_panel = ObjectProperty(None)
     preview_panel = ObjectProperty(None)
     prompts_panel = ObjectProperty(None)
+    tabbed_panel = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -28,6 +29,7 @@ class MainScreen(Screen):
 
     def on_load_requested(self, widget, filename: str):
         self.generation_panel.load_from_file(filename)
+        self.tabbed_panel.switch_to(self.tabbed_panel.tab_list[1])
 
 
 class LogsScreen(Screen):

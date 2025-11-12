@@ -56,12 +56,16 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     height_text = ObjectProperty(None)
     highres_checkbox = ObjectProperty(None)
     sampler_button = ObjectProperty(None)
+    upscaler_button = ObjectProperty(None)
+    hrscale_text = ObjectProperty(None)
+    denoising_slider = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
         self.sampler_button.set_items(sampling_methods)
+        self.upscaler_button.set_items(upscaler_methods)
         self.register_event_type('on_prompt_ready')
 
     def on_prompt_ready(self, *args):
@@ -73,15 +77,16 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'negative_prompt': self.text_negative_prompt.text,
             'steps': f'{self.steps_slider.value:.3g}',
             'cfg_scale': f'{self.cfg_slider.value:.3g}',
-            'width': '',
-            'height': '',
-            'enable_hr': False,
-            'hr_scale': '',
-            'hr_upscaler': '',
-            'hr_negative_prompt': '',
-            'denoising_strength': 0.5,
+            'width': int(self.width_text.text),
+            'height': int(self.height_text.text),
+            'sampler_name': self.sampler_button.text,
             'batch_size': 1,
-            'sampler_name': 'Euler a'
+
+            'enable_hr': self.highres_checkbox.active,
+            'hr_scale': self.hrscale_text.text,
+            'hr_upscaler': self.upscaler_button.text,
+            'hr_negative_prompt': '',
+            'denoising_strength': self.denoising_slider.value
         }
         full_data = {
             'input': prompt_data
@@ -89,7 +94,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
 
         print(json.dumps(full_data, indent=4))
 
-        self.dispatch('on_prompt_ready')
+        #self.dispatch('on_prompt_ready')
 
     def load_from_file(self, filename: str):
         with open("../prompts/" + filename, 'rb') as prompt_file:
@@ -99,11 +104,16 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     def load_from_json(self, json_data):
         print(json_data)
         prompt_data = json_data['input']
-        self.text_prompt.text = prompt_data['prompt']
-        self.text_negative_prompt.text = prompt_data['negative_prompt']
-        self.steps_slider.value = prompt_data['steps']
-        self.cfg_slider.value = prompt_data['cfg_scale']
-        self.width_text.text = str(prompt_data['width'])
-        self.height_text.text = str(prompt_data['height'])
-        self.highres_checkbox.active = prompt_data['enable_hr']
+        self.text_prompt.text = prompt_data.get('prompt', '')
+        self.text_negative_prompt.text = prompt_data.get('negative_prompt', '')
+        self.steps_slider.value = prompt_data.get('steps', 20)
+        self.sampler_button.text = prompt_data.get('sampler_name', 'Euler a')
+        self.cfg_slider.value = prompt_data.get('cfg_scale', 7)
+        self.width_text.text = str(prompt_data.get('width', 1024))
+        self.height_text.text = str(prompt_data.get('height',768))
+
+        self.highres_checkbox.active = prompt_data.get('enable_hr', False)
+        self.hrscale_text.text = str(prompt_data.get('hr_scale', 2))
+        self.upscaler_button.text = prompt_data.get('hr_upscaler', 'None')
+        self.denoising_slider.value = prompt_data.get('denoising_strength', 0.5)
         pass

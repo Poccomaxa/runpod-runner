@@ -15,7 +15,7 @@ class TextSlider(BoxLayout):
     def on_slider_value(self, value):
         if not self.changeGuard:
             self.changeGuard = True
-            self.text_input.text = f'{value:.3g}'
+            self.text_input.text = f'{value:.2f}'
             self.value = value
             self.changeGuard = False
 

@@ -18,10 +18,14 @@
     height_text: height_text
     highres_checkbox: highres_checkbox
     sampler_button: sampler_button
+    upscaler_button: upscaler_button
+    hrscale_text: hrscale_text
+    denoising_slider: denoising_slider
 
     spacing:3
     padding:3
     BoxLayout:
+        size_hint_x: 2
         orientation: 'vertical'
         TextInput:
             id: text_prompt
@@ -57,15 +61,30 @@
             size_hint: None, None
             text: '768'
             allow_decimal: False
+        #Hi res upscale group
         CheckBox: #enable hi res
             id: highres_checkbox
             height: 40
             size_hint: None, None
             text: 'height'
         FloatText: #hr scale
+            id: hrscale_text
             height: self.minimum_height
             size_hint: None, None
             text: '2'
+        TextDropdown: #upscaler
+            id: upscaler_button
+            size: 100, 30
+            size_hint: None, None
+            text: 'Nearest'
+        TextSlider:
+            size_hint_x: None
+            width: 300
+            id: denoising_slider
+            title: "Denoise:"
+            min_value: 0
+            max_value: 1
+            value: 0.5
 
     Button:
         size_hint: None, None
