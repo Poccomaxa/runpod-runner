@@ -3,10 +3,10 @@ import json
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.dropdown import DropDown
 from kivy.uix.label import Label
 
 from styles import BasePanelBG
+from text_dropdown import TextDropdown  # noqa
 
 sampling_methods = [
     'DPM++ 2M',
@@ -38,11 +38,14 @@ upscaler_methods = [
     'Nearest'
 ]
 
+
 class DropDownLine(ButtonBehavior, Label):
     pass
 
+
 class DropDownPanel(BoxLayout, BasePanelBG):
     pass
+
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
@@ -55,29 +58,11 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     sampler_button = ObjectProperty(None)
 
     def __init__(self, **kwargs):
-        self.sampler_container = None
-        self.sampler_dropdown = None
         super().__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
-        self.sampler_container = DropDownPanel()
-        self.sampler_dropdown = DropDown()
-        for sampling_method in sampling_methods:
-            new_entry = DropDownLine(
-                text=sampling_method
-            )
-            new_entry.bind(on_press=lambda element: self.sampler_dropdown.select(element.text))
-            self.sampler_container.add_widget(new_entry)
-
-        self.sampler_dropdown.add_widget(self.sampler_container)
-        self.sampler_container.bind(width=lambda obj, value: setattr(self.sampler_button, 'width', value + 10))
-        self.sampler_button.bind(on_press=self.sampler_dropdown.open)
-        self.sampler_dropdown.bind(on_select=self.on_sampler_selected)
-
+        self.sampler_button.set_items(sampling_methods)
         self.register_event_type('on_prompt_ready')
-
-    def on_sampler_selected(self, widget, selection):
-        self.sampler_button.text = selection
 
     def on_prompt_ready(self, *args):
         pass
@@ -105,8 +90,6 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         print(json.dumps(full_data, indent=4))
 
         self.dispatch('on_prompt_ready')
-
-
 
     def load_from_file(self, filename: str):
         with open("../prompts/" + filename, 'rb') as prompt_file:
