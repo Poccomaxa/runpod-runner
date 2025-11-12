@@ -63,11 +63,18 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             new_entry = DropDownLine(
                 text=sampling_method
             )
+            new_entry.bind(on_press=lambda element: self.sampler_dropdown.select(element.text))
             self.sampler_container.add_widget(new_entry)
 
         self.sampler_dropdown.add_widget(self.sampler_container)
+        self.sampler_container.bind(width=lambda obj, value: setattr(self.sampler_button, 'width', value + 10))
         self.sampler_button.bind(on_press=self.sampler_dropdown.open)
+        self.sampler_dropdown.bind(on_select=self.on_sampler_selected)
+
         self.register_event_type('on_prompt_ready')
+
+    def on_sampler_selected(self, widget, selection):
+        self.sampler_button.text = selection
 
     def on_prompt_ready(self, *args):
         pass
