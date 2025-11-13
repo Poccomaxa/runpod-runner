@@ -35,7 +35,7 @@ class MainScreen(Screen):
 
     def on_load_requested(self, widget, filename: str):
         self.generation_panel.load_from_file(filename)
-        self.tabbed_panel.switch_to(self.tabbed_panel.tab_list[1])
+        self.tabbed_panel.switch_to(self.tabbed_panel.tab_list[2])
 
 
 class LogsScreen(Screen):
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
     Window.top = 100
-    Window.left = 100
+    Window.left = 1900
     Window.size = (1440, 960)
 
     loop = asyncio.get_event_loop()

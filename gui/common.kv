@@ -2,7 +2,7 @@
 
 <CommonPopup@Popup>
     size_hint: None, None
-    size: 500, 300
+    size: dp(500), dp(300)
     text: 'Text goes here'
     BoxLayout:
         orientation: 'vertical'
@@ -12,7 +12,7 @@
             halign: 'center'
         Button:
             size_hint_y: None
-            height: 50
+            height: dp(50)
             text: 'Ok'
             on_press: root.dismiss()
 
@@ -39,7 +39,7 @@
     height: self.minimum_height
     size_hint_y: None
     AnchorLayout:
-        size: 100, 30
+        size: dp(100), dp(30)
         size_hint: None, None
         anchor_x: 'right'
         Label:
@@ -48,7 +48,7 @@
             size_hint: None, None
     Slider:
         id: slider
-        cursor_size: 18, 18
+        cursor_size: dp(18), dp(18)
         value: root.value
         on_value: root.on_slider_value(self.value)
         min: root.min_value
@@ -58,6 +58,6 @@
         multiline: False
         allow_decimal: True
         on_text: root.on_text_changed(self.text)
-        size: 60, self.minimum_height
+        size: dp(60), self.minimum_height
         size_hint: None, None
 

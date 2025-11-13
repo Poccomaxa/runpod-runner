@@ -13,7 +13,7 @@
     LogsPanel:
         anchor_x: 'left'
         anchor_y: 'bottom'
-        padding: 5
+        padding: dp(5)
         Label:
             id: logs
             size_hint_y: None
@@ -34,8 +34,8 @@
 
     MainPanel:
         orientation: 'vertical'
-        padding: 3
-        spacing: 3
+        padding: dp(3)
+        spacing: dp(3)
         Preview:
             id: preview_panel
         TabbedPanel:
@@ -43,7 +43,7 @@
             default_tab: generation_tab
             background_color: 1, 1, 1, 0
             size_hint_y: None
-            height: 250
+            height: dp(250)
             TabbedPanelItem:
                 id: generation_tab
                 text: 'Generation'

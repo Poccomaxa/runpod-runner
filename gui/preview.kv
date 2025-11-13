@@ -15,7 +15,7 @@
         id: image_thumb
         fit_mode: 'contain'
         size_hint_y: None
-        width: 200
+        width: dp(200)
 
     Label:
         id: file_name
@@ -25,7 +25,7 @@
 
 <Preview@BoxLayout>:
     orientation: 'horizontal'
-    spacing: 3
+    spacing: dp(3)
     file_list: file_list
     big_image: big_image
     scatter_container: scatter_container
@@ -51,7 +51,7 @@
     ImagesPanel:
         do_scroll_y: True
         size_hint_x: None
-        width: 200
+        width: dp(200)
         BoxLayout:
             id: file_list
             orientation: 'vertical'

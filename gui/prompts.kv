@@ -12,12 +12,12 @@
     prompt_list: prompt_list
     ScrollView:
         StackLayout:
-            spacing: 5
+            spacing: dp(5)
             orientation: 'tb-lr'
             id: prompt_list
     BoxLayout:
         size_hint_x: None
-        width: 160
+        width: dp(160)
         orientation: 'vertical'
         Button:
             on_press: root.on_load_pressed()
