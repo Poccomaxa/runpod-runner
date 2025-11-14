@@ -14,13 +14,14 @@
     steps_slider: steps_slider
     text_prompt: text_prompt
     text_negative_prompt: text_negative_prompt
-    width_text: width_text
-    height_text: height_text
+    width_text: width_text.input_field
+    height_text: height_text.input_field
     highres_checkbox: highres_checkbox
     sampler_button: sampler_button
     upscaler_button: upscaler_button
-    hrscale_text: hrscale_text
+    hrscale_text: hrscale_text.input_field
     denoising_slider: denoising_slider
+    batch_text: batch_text
 
     spacing:3
     padding:3
@@ -32,6 +33,7 @@
         TextInput:
             id: text_negative_prompt
     StackLayout:
+        spacing:3
         TextSlider:
             id: steps_slider
             title: "Steps:"
@@ -44,34 +46,29 @@
             min_value: 1
             max_value: 20
             value: 4.5
+        LabeledFloatText: #width
+            id: width_text
+            title: 'Width:'
+            allow_decimal: False
+        LabeledFloatText: #height
+            id: height_text
+            title: 'Height:'
+            allow_decimal: False
         TextDropdown: #sampler_name
             id: sampler_button
             size: dp(100), dp(30)
             size_hint: None, None
             text: 'Euler a'
-        FloatText: #width
-            id: width_text
-            size: dp(60), self.minimum_height
-            size_hint: None, None
-            text: '1024'
-            allow_decimal: False
-        FloatText: #height
-            id: height_text
-            size: dp(60), self.minimum_height
-            size_hint: None, None
-            text: '768'
-            allow_decimal: False
         #Hi res upscale group
         CheckBox: #enable hi res
             id: highres_checkbox
             height: dp(40)
             size_hint: None, None
             text: 'height'
-        FloatText: #hr scale
+        LabeledFloatText: #hr scale
             id: hrscale_text
-            height: self.minimum_height
-            size_hint: None, None
-            text: '2'
+            title: 'Upscale:'
+            allow_decimal: True
         TextDropdown: #upscaler
             id: upscaler_button
             size: dp(100), dp(30)
@@ -85,6 +82,10 @@
             min_value: 0
             max_value: 1
             value: 0.5
+        LabeledFloatText: #batch
+            id: batch_text
+            title: 'Upscale:'
+            allow_decimal: False
 
     Button:
         size_hint: None, None

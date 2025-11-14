@@ -25,6 +25,24 @@
 <FloatText@TextInput>
     multiline: False
 
+<LabeledFloatText@BoxLayout>
+    input_field: input_field
+    allow_decimal: False
+    orientation: 'horizontal'
+    title: 'Title: '
+    size: self.minimum_width, self.minimum_height
+    size_hint: None, None
+    Label:
+        text: root.title
+        size: self.texture_size
+        size_hint: None, None
+    FloatText:
+        id: input_field
+        size_hint:None, None
+        size: dp(60), self.minimum_height
+        allow_decimal: root.allow_decimal
+
+
 <TextSlider@BoxLayout>
     title: 'Title:'
     min_value: 0

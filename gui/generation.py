@@ -50,6 +50,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     upscaler_button = ObjectProperty(None)
     hrscale_text = ObjectProperty(None)
     denoising_slider = ObjectProperty(None)
+    batch_text = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -71,7 +72,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'width': int(self.width_text.text),
             'height': int(self.height_text.text),
             'sampler_name': self.sampler_button.text,
-            'batch_size': 1,
+            'batch_size': int(self.batch_text.text),
 
             'enable_hr': self.highres_checkbox.active,
             'hr_scale': self.hrscale_text.text,
@@ -102,6 +103,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         self.cfg_slider.value = prompt_data.get('cfg_scale', 7)
         self.width_text.text = str(prompt_data.get('width', 1024))
         self.height_text.text = str(prompt_data.get('height',768))
+        self.batch_text.text = str(prompt_data.get('batch_size', 1))
 
         self.highres_checkbox.active = prompt_data.get('enable_hr', False)
         self.hrscale_text.text = str(prompt_data.get('hr_scale', 2))
