@@ -1,4 +1,4 @@
-import os
+from pathlib import Path
 
 from kivy.clock import Clock
 from kivy.properties import ObjectProperty
@@ -51,12 +51,13 @@ class Preview(BoxLayout):
 
     def reload_images(self):
         self.file_list.clear_widgets()
-        if os.path.exists('../output'):
-            image_paths = os.listdir('../output')
-            for imagePath in image_paths:
+        output_dir = Path('../output')
+        if output_dir.exists():
+            sorted_images = sorted(output_dir.iterdir(), key = lambda fname: fname.stat().st_mtime, reverse = True)
+            for imagePath in sorted_images:
                 new_thumbnail = Thumbnail()
-                new_thumbnail.file_name.text = imagePath
-                new_thumbnail.image_thumb.source = "../output/" + imagePath
+                new_thumbnail.file_name.text = imagePath.name
+                new_thumbnail.image_thumb.source = "../output/" + imagePath.name
                 new_thumbnail.bind(on_press=self.on_image_selected)
                 self.file_list.add_widget(new_thumbnail)
 

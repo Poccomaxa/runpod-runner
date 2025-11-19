@@ -83,7 +83,7 @@ class AppRoot(ScreenManager):
 
     def on_prompt_ready(self, widget, json_data):
         print('Prompt ready')
-        print('json.dumps(json_data, indent=4)')
+        print(json.dumps(json_data, indent=4))
 
         endpoint = self.main_screen.global_settings_panel.api_endpoint_text.text
         if endpoint == '':

@@ -84,8 +84,6 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'input': prompt_data
         }
 
-
-
         self.dispatch('on_prompt_ready', full_data)
 
     def load_from_file(self, filename: str):
@@ -94,7 +92,6 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             self.load_from_json(data)
 
     def load_from_json(self, json_data):
-        print(json_data)
         prompt_data = json_data['input']
         self.text_prompt.text = prompt_data.get('prompt', '')
         self.text_negative_prompt.text = prompt_data.get('negative_prompt', '')
@@ -102,7 +99,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         self.sampler_button.text = prompt_data.get('sampler_name', 'Euler a')
         self.cfg_slider.value = prompt_data.get('cfg_scale', 7)
         self.width_text.text = str(prompt_data.get('width', 1024))
-        self.height_text.text = str(prompt_data.get('height',768))
+        self.height_text.text = str(prompt_data.get('height', 768))
         self.batch_text.text = str(prompt_data.get('batch_size', 1))
 
         self.highres_checkbox.active = prompt_data.get('enable_hr', False)

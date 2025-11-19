@@ -21,7 +21,7 @@
     upscaler_button: upscaler_button
     hrscale_text: hrscale_text.input_field
     denoising_slider: denoising_slider
-    batch_text: batch_text
+    batch_text: batch_text.input_field
 
     spacing:3
     padding:3
@@ -78,13 +78,13 @@
             size_hint_x: None
             width: dp(300)
             id: denoising_slider
-            title: "Denoise:"
+            title: 'Denoise:'
             min_value: 0
             max_value: 1
             value: 0.5
         LabeledFloatText: #batch
             id: batch_text
-            title: 'Upscale:'
+            title: 'Batch:'
             allow_decimal: False
 
     Button:
