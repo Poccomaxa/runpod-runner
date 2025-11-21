@@ -7,6 +7,7 @@
 <Thumbnail@ButtonBehavior+BoxLayout>
     file_name: file_name
     image_thumb: image_thumb
+    load_prompt_button: load_prompt
     size_hint_y: None
     height: self.minimum_height
     orientation: 'vertical'
@@ -22,6 +23,12 @@
         text: ''
         size_hint_y: None
         size: self.texture_size
+
+    Button:
+        id: load_prompt
+        text: "Load prompt"
+        size_hint: 1, None
+        height: dp(20)
 
 <Preview@BoxLayout>:
     orientation: 'horizontal'

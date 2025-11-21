@@ -32,11 +32,14 @@ class MainScreen(Screen):
 
     def on_kv_post(self, base_widget):
         self.prompts_panel.bind(on_load_requested=self.on_load_requested)
+        self.preview_panel.bind(on_load_prompt_from_image=self.on_load_prompt_from_image)
 
     def on_load_requested(self, widget, filename: str):
         self.generation_panel.load_from_file(filename)
         self.tabbed_panel.switch_to(self.tabbed_panel.tab_list[2])
 
+    def on_load_prompt_from_image(self, widget, image_path):
+        self.generation_panel.load_from_image_metadata(image_path)
 
 class LogsScreen(Screen):
     logs = ObjectProperty(None)

@@ -28,6 +28,7 @@ def align_in_frame(cnt_min: float, cnt_max: float, img_min: float, img_max: floa
 class Thumbnail(ButtonBehavior, BoxLayout):
     file_name = ObjectProperty(None)
     image_thumb = ObjectProperty(None)
+    load_prompt_button = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -48,22 +49,31 @@ class Preview(BoxLayout):
     def on_kv_post(self, base_widget):
         Clock.schedule_interval(self.on_update, 0)
         self.reload_images()
+        self.register_event_type('on_load_prompt_from_image')
 
     def reload_images(self):
         self.file_list.clear_widgets()
         output_dir = Path('../output')
         if output_dir.exists():
-            sorted_images = sorted(output_dir.iterdir(), key = lambda fname: fname.stat().st_mtime, reverse = True)
+            sorted_images = sorted(output_dir.iterdir(), key=lambda fname: fname.stat().st_mtime, reverse=True)
             for imagePath in sorted_images:
                 new_thumbnail = Thumbnail()
                 new_thumbnail.file_name.text = imagePath.name
                 new_thumbnail.image_thumb.source = "../output/" + imagePath.name
                 new_thumbnail.bind(on_press=self.on_image_selected)
+                new_thumbnail.load_prompt_button.bind(on_press=self.on_load_prompt)
                 self.file_list.add_widget(new_thumbnail)
+
+    def on_load_prompt_from_image(self, *args):
+        pass
+
+    def on_load_prompt(self, widget):
+        self.dispatch('on_load_prompt_from_image', widget.parent.image_thumb.source)
 
     def on_image_selected(self, widget):
         self.scatter_container.scale = 1
         self.scatter_container.pos = self.scatter_container.to_parent(0, 0)
+        self.scatter_container.rotation = 0
         self.scatter_container.rotation = 0
 
         self.big_image.source = widget.image_thumb.source

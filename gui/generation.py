@@ -1,4 +1,5 @@
 import json
+from PIL import Image, PngImagePlugin
 
 from kivy.properties import ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
@@ -37,6 +38,7 @@ upscaler_methods = [
     'Lanczos',
     'Nearest'
 ]
+
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
@@ -85,6 +87,33 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         }
 
         self.dispatch('on_prompt_ready', full_data)
+
+    def load_from_image_metadata(self, filename: str):
+        img = Image.open(filename)
+
+        sections = str.split(img.info['parameters'], '\n')
+
+        self.text_prompt.text = sections[0]
+        self.text_negative_prompt.text = sections[1].replace('Negative prompt:', '').strip()
+        params = str.split(sections[2], ',')
+        steps = next((s for s in params if 'Steps:' in s), None)
+        if steps is not None:
+            self.steps_slider.value = float(steps.replace('Steps:', '').strip())
+
+        sampler = next((s for s in params if 'Sampler:' in s), None)
+        if sampler is not None:
+            self.sampler_button.text = sampler.replace('Sampler:', '').strip()
+
+        cfg_scale = next((s for s in params if 'CFG scale:' in s), None)
+        if cfg_scale is not None:
+            self.cfg_slider.value = float(cfg_scale.replace('CFG scale:', '').strip())
+
+        seed = next((s for s in params if 'Seed:' in s), None)
+        image_size = next((s for s in params if 'Size:' in s), None)
+        if image_size is not None:
+            image_size_dimensions = image_size.replace('Size:', '').strip().split('x')
+            self.width_text.text = image_size_dimensions[0]
+            self.height_text.text = image_size_dimensions[1]
 
     def load_from_file(self, filename: str):
         with open("../prompts/" + filename, 'rb') as prompt_file:
