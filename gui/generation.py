@@ -1,4 +1,6 @@
 import json
+from pathlib import Path
+
 from PIL import Image, PngImagePlugin
 
 from kivy.properties import ObjectProperty
@@ -6,6 +8,7 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 
+from common_popup import CommonPopup
 from styles import BasePanelBG
 from text_dropdown import TextDropdown  # noqa
 
@@ -132,6 +135,15 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         with open("../prompts/" + filename, 'rb') as prompt_file:
             data = json.load(prompt_file)
             self.load_from_json(data)
+
+    def save_to_file(self, filename: str):
+        full_path = '../prompts/' + filename + '.json'
+        if Path(full_path).exists():
+            popup = CommonPopup(title='Already exists', auto_dismiss=False)
+            popup.text = 'This prompt filename is already in use, choose another'
+            popup.open()
+
+
 
     def load_from_json(self, json_data):
         prompt_data = json_data['input']

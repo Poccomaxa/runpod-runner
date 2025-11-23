@@ -15,6 +15,7 @@ class PromptsItem(ButtonBehavior, Label):
 
 class PromptsPanel(BoxLayout):
     prompt_list = ObjectProperty(None)
+    prompt_file_name = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         self.selected_item = None
@@ -31,11 +32,18 @@ class PromptsPanel(BoxLayout):
 
                 self.prompt_list.add_widget(new_label)
 
+    def on_save_pressed(self):
+        self.dispatch('on_save_requested', self.prompt_file_name.text)
+
     def on_kv_post(self, base_widget):
         self.register_event_type('on_load_requested')
+        self.register_event_type('on_save_requested')
         self.load_prompts()
 
     def on_load_requested(self, to_load: str):
+        pass
+
+    def on_save_requested(self, to_save: str):
         pass
 
     def on_prompt_selected(self, widget):

@@ -10,17 +10,26 @@
 <PromptsPanel@BoxLayout>
     orientation: 'horizontal'
     prompt_list: prompt_list
+    buttons_box: buttons_box
+    prompt_file_name: buttons_box.prompt_name
     ScrollView:
         StackLayout:
             spacing: dp(5)
             orientation: 'tb-lr'
             id: prompt_list
     BoxLayout:
+        id: buttons_box
         size_hint_x: None
         width: dp(160)
         orientation: 'vertical'
+        prompt_name: prompt_name
         Button:
             on_press: root.on_load_pressed()
             text: 'Load'
+        TextInput:
+            id: prompt_name
+        Button:
+            on_press: root.on_save_pressed()
+            text: 'Save'
 
 
