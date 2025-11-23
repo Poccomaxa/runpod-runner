@@ -39,6 +39,11 @@ upscaler_methods = [
     'Nearest'
 ]
 
+def to_int(string: str, default):
+    try:
+        return int(string)
+    except ValueError:
+        return default
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
@@ -53,6 +58,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     hrscale_text = ObjectProperty(None)
     denoising_slider = ObjectProperty(None)
     batch_text = ObjectProperty(None)
+    seed_text = ObjectProperty(None)
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -71,10 +77,10 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'negative_prompt': self.text_negative_prompt.text,
             'steps': f'{self.steps_slider.value:.3g}',
             'cfg_scale': f'{self.cfg_slider.value:.3g}',
-            'width': int(self.width_text.text),
-            'height': int(self.height_text.text),
+            'width': to_int(self.width_text.text, 512),
+            'height': to_int(self.height_text.text, 512),
             'sampler_name': self.sampler_button.text,
-            'batch_size': int(self.batch_text.text),
+            'batch_size': to_int(self.batch_text.text, 1),
 
             'enable_hr': self.highres_checkbox.active,
             'hr_scale': self.hrscale_text.text,
@@ -82,6 +88,10 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'hr_negative_prompt': '',
             'denoising_strength': self.denoising_slider.value
         }
+
+        if self.seed_text.text != '':
+            prompt_data['seed'] = self.seed_text.text
+
         full_data = {
             'input': prompt_data
         }
@@ -109,6 +119,9 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             self.cfg_slider.value = float(cfg_scale.replace('CFG scale:', '').strip())
 
         seed = next((s for s in params if 'Seed:' in s), None)
+        if seed is not None:
+            self.seed_text.text = seed.replace('Seed:', '').strip()
+
         image_size = next((s for s in params if 'Size:' in s), None)
         if image_size is not None:
             image_size_dimensions = image_size.replace('Size:', '').strip().split('x')
@@ -135,4 +148,5 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         self.hrscale_text.text = str(prompt_data.get('hr_scale', 2))
         self.upscaler_button.text = prompt_data.get('hr_upscaler', 'None')
         self.denoising_slider.value = prompt_data.get('denoising_strength', 0.5)
+        self.seed_text.text = prompt_data.get('seed', '')
         pass

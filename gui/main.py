@@ -156,8 +156,6 @@ class MainApp(App):
 if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
-    Window.top = 100
-    Window.left = 1900
     Window.size = (1440, 960)
 
     loop = asyncio.get_event_loop()

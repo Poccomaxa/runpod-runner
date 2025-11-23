@@ -22,6 +22,7 @@
     hrscale_text: hrscale_text.input_field
     denoising_slider: denoising_slider
     batch_text: batch_text.input_field
+    seed_text: seed_text.input_field
 
     spacing:3
     padding:3
@@ -82,10 +83,15 @@
             min_value: 0
             max_value: 1
             value: 0.5
-        LabeledFloatText: #batch
+        LabeledFloatText:
             id: batch_text
             title: 'Batch:'
             allow_decimal: False
+        LabeledFloatText:
+            id: seed_text
+            title: 'Seed:'
+            allow_decimal: False
+            text_width: dp(120)
 
     Button:
         size_hint: None, None

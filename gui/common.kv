@@ -32,6 +32,7 @@
     title: 'Title: '
     size: self.minimum_width, self.minimum_height
     size_hint: None, None
+    text_width: dp(60)
     Label:
         text: root.title
         size: self.texture_size
@@ -39,7 +40,7 @@
     FloatText:
         id: input_field
         size_hint:None, None
-        size: dp(60), self.minimum_height
+        size: root.text_width, self.minimum_height
         allow_decimal: root.allow_decimal
 
 
