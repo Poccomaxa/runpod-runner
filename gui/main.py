@@ -1,6 +1,15 @@
 import json
 import os
 import asyncio
+import sys
+
+#Hack to stop windows from upscaling UI more than needed
+if sys.platform == 'win32':
+    try:
+        from ctypes import windll, c_int64
+        windll.user32.SetProcessDpiAwarenessContext(c_int64(-2))
+    except (ImportError, AttributeError, OSError):
+        pass
 
 from kivy import Config
 from kivy.app import App
@@ -162,10 +171,6 @@ class MainApp(App):
 
 if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
-
-    # Window.size = (1440, 960)
-    Window.top = 100
-    Window.left = 1900
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MainApp().async_run('asyncio'))
