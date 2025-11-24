@@ -42,11 +42,13 @@ upscaler_methods = [
     'Nearest'
 ]
 
+
 def to_int(string: str, default):
     try:
         return int(string)
     except ValueError:
         return default
+
 
 class GenerationPanel(BoxLayout, BasePanelBG):
     cfg_slider = ObjectProperty(None)
@@ -74,7 +76,7 @@ class GenerationPanel(BoxLayout, BasePanelBG):
     def on_prompt_ready(self, *args):
         pass
 
-    def on_generate_press(self):
+    def generate_prompt_data(self):
         prompt_data = {
             'prompt': self.text_prompt.text,
             'negative_prompt': self.text_negative_prompt.text,
@@ -98,8 +100,10 @@ class GenerationPanel(BoxLayout, BasePanelBG):
         full_data = {
             'input': prompt_data
         }
+        return full_data
 
-        self.dispatch('on_prompt_ready', full_data)
+    def on_generate_press(self):
+        self.dispatch('on_prompt_ready', self.generate_prompt_data())
 
     def load_from_image_metadata(self, filename: str):
         img = Image.open(filename)
@@ -142,8 +146,10 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             popup = CommonPopup(title='Already exists', auto_dismiss=False)
             popup.text = 'This prompt filename is already in use, choose another'
             popup.open()
-
-
+        else:
+            with open(full_path, 'w') as prompt_file:
+                full_json = self.generate_prompt_data()
+                json.dump(full_json, prompt_file, indent=4)
 
     def load_from_json(self, json_data):
         prompt_data = json_data['input']
