@@ -24,8 +24,8 @@
     batch_text: batch_text.input_field
     seed_text: seed_text.input_field
 
-    spacing:3
-    padding:3
+    spacing:dp(3)
+    padding:dp(3)
     BoxLayout:
         size_hint_x: 2
         orientation: 'vertical'
@@ -34,7 +34,7 @@
         TextInput:
             id: text_negative_prompt
     StackLayout:
-        spacing:3
+        spacing:dp(3)
         TextSlider:
             id: steps_slider
             title: "Steps:"

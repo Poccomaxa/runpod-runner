@@ -1,24 +1,23 @@
 import json
 import os
 import asyncio
-from idlelib.browser import file_open
 
 from kivy import Config
 from kivy.app import App
 from kivy.properties import ObjectProperty
-from kivy.uix.label import Label
-from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.core.window import Keyboard
 
-from generation import GenerationPanel  # noqa
 from common_popup import CommonPopup
+
+# These imports are not used in file, but needed because of kivy reflection code that automatically injects classes when creating UI based on kv files
+from generation import GenerationPanel  # noqa
 from text_slider import TextSlider  # noqa
 from float_text import FloatText  # noqa
 from preview import Preview  # noqa
 from prompts import PromptsPanel  # noqa
-from settings import GlobalSettingsPanel #noqa
+from settings import GlobalSettingsPanel  # noqa
 
 
 class MainScreen(Screen):
@@ -36,7 +35,6 @@ class MainScreen(Screen):
         self.prompts_panel.bind(on_save_requested=self.on_save_requested)
         self.preview_panel.bind(on_load_prompt_from_image=self.on_load_prompt_from_image)
 
-
     def on_load_requested(self, widget, filename: str):
         self.generation_panel.load_from_file(filename)
         self.tabbed_panel.switch_to(self.tabbed_panel.tab_list[2])
@@ -47,6 +45,7 @@ class MainScreen(Screen):
 
     def on_load_prompt_from_image(self, widget, image_path):
         self.generation_panel.load_from_image_metadata(image_path)
+
 
 class LogsScreen(Screen):
     logs = ObjectProperty(None)
@@ -68,6 +67,7 @@ class LogsScreen(Screen):
         self.log_lines = self.log_lines[-self.max_lines:]
         self.logs.text = '\n'.join(self.log_lines)
 
+
 class AppRoot(ScreenManager):
     main_screen = ObjectProperty(None)
     logs_screen = ObjectProperty(None)
@@ -80,7 +80,8 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self, endpoint):
         self.generation_exec = await asyncio.create_subprocess_exec(
-            'python', 'run_and_produce_image.py', 'prompts/last_prompt.json.tmp', '-p', endpoint, cwd=os.path.abspath('..'),
+            'python', 'run_and_produce_image.py', 'prompts/last_prompt.json.tmp', '-p', endpoint,
+            cwd=os.path.abspath('..'),
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
 
         async for line in self.generation_exec.stdout:
@@ -95,7 +96,7 @@ class AppRoot(ScreenManager):
         endpoint = self.main_screen.global_settings_panel.api_endpoint_text.text
         if endpoint == '':
             popup = CommonPopup(title='No api endpoint', auto_dismiss=False)
-            popup.text='You should provide your api endpoint for the first run in the settings tab. Later it will load last one automatically'
+            popup.text = 'You should provide your api endpoint for the first run in the settings tab. Later it will load last one automatically'
             popup.open()
             return
 
@@ -162,7 +163,9 @@ class MainApp(App):
 if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
 
-    Window.size = (1440, 960)
+    # Window.size = (1440, 960)
+    Window.top = 100
+    Window.left = 1900
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MainApp().async_run('asyncio'))
