@@ -151,6 +151,8 @@ class MainApp(App):
         return self.sm
 
     def on_key_down(self, window, key, scancode, codepoint, modifier):
+        if key not in MainApp.code_to_name:
+            return
         if MainApp.code_to_name[key] == '`':
             self.sm.on_cycle_screens()
         if MainApp.code_to_name[key] == 'spacebar':
