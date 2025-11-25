@@ -55,7 +55,7 @@ with open(args.prompt) as prompt_file:
     prompt = json.load(prompt_file)
 
 print("Prompt to be used:")
-print(prompt)
+print(prompt, flush=True)
 
 #Forecast of output size - there is limit of 20 MB for all runpod post calls
 limit = 20 * 1024 * 1024
@@ -65,9 +65,9 @@ width = prompt["input"]["width"]
 height = prompt["input"]["height"]
 batch_size = prompt["input"].get("batch_size", 1)
 estimateSize = batch_size * width * height * estimatePngPerByte * base64Overhead
-print(f"Estimate output size: {humanize.naturalsize(estimateSize)}")
+print(f"Estimate output size: {humanize.naturalsize(estimateSize)}", flush=True)
 if estimateSize > limit:
-    print(f"Job fill fail, expected output is more then 20MB, exiting...")
+    print(f"Job fill fail, expected output is more then 20MB, exiting...", flush=True)
     exit()
 
 #Actual request to the runpod api
@@ -85,7 +85,7 @@ elif not args.dry_run:
     for i in range(args.queue_size):
         run_requests.append(endpoint.run(prompt))
 
-    print(f"Running {args.queue_size} async requests...")
+    print(f"Running {args.queue_size} async requests...", flush=True)
 
     approximateCost = 0
     for run_request in run_requests:

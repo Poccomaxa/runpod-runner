@@ -171,6 +171,7 @@ class MainApp(App):
 
 if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
+    Config.set('kivy', 'exit_on_escape', '0')
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MainApp().async_run('asyncio'))
