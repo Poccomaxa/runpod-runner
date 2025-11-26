@@ -9,6 +9,7 @@ from kivy.uix.label import Label
 
 class PromptsItem(ButtonBehavior, Label):
     selected = BooleanProperty(False)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 

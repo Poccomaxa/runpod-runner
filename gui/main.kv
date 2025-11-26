@@ -20,7 +20,7 @@
             height: self.texture_size[1]
             text_size: self.width, None
             text: "Here\nBe\nText"
-            font_size: 18
+            font_size: sp(18)
             valign: 'bottom'
 
 <MainPanel@BoxLayout+AppBG>
@@ -41,7 +41,6 @@
         TabbedPanel:
             id: tabbed_panel
             default_tab: generation_tab
-            background_color: 1, 1, 1, 0
             size_hint_y: None
             height: dp(250)
             TabbedPanelItem:

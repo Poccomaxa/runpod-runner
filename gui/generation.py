@@ -86,13 +86,15 @@ class GenerationPanel(BoxLayout, BasePanelBG):
             'height': to_int(self.height_text.text, 512),
             'sampler_name': self.sampler_button.text,
             'batch_size': to_int(self.batch_text.text, 1),
-
-            'enable_hr': self.highres_checkbox.active,
-            'hr_scale': self.hrscale_text.text,
-            'hr_upscaler': self.upscaler_button.text,
-            'hr_negative_prompt': '',
-            'denoising_strength': self.denoising_slider.value
         }
+
+        if self.highres_checkbox.active:
+            prompt_data['enable_hr'] = True
+            prompt_data['hr_upscaler'] = self.upscaler_button.text
+            # TODO
+            prompt_data['hr_negative_prompt'] = ''
+            prompt_data['denoising_strength'] = self.denoising_slider.value
+            prompt_data['hr_scale'] = self.hrscale_text.text if self.hrscale_text.text != '' else 1
 
         if self.seed_text.text != '':
             prompt_data['seed'] = self.seed_text.text
@@ -107,12 +109,15 @@ class GenerationPanel(BoxLayout, BasePanelBG):
 
     def load_from_image_metadata(self, filename: str):
         img = Image.open(filename)
-
+        print(img.info['parameters'])
         sections = str.split(img.info['parameters'], '\n')
 
         self.text_prompt.text = sections[0]
-        self.text_negative_prompt.text = sections[1].replace('Negative prompt:', '').strip()
-        params = str.split(sections[2], ',')
+        if sections[1].find('Negative prompt:') != -1:
+            self.text_negative_prompt.text = sections[1].replace('Negative prompt:', '').strip()
+
+        params_section = sections[-1]
+        params = str.split(params_section, ',')
         steps = next((s for s in params if 'Steps:' in s), None)
         if steps is not None:
             self.steps_slider.value = float(steps.replace('Steps:', '').strip())
