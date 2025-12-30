@@ -5,5 +5,5 @@ cache.json
 *.pyc
 
 prompts/
-output/
+output*/
 raw_responses/

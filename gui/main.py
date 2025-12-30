@@ -89,7 +89,7 @@ class AppRoot(ScreenManager):
 
     async def run_generation(self, endpoint):
         self.generation_exec = await asyncio.create_subprocess_exec(
-            'python', 'run_and_produce_image.py', 'prompts/last_prompt.json.tmp', '-p', endpoint,
+            sys.executable, 'run_and_produce_image.py', 'prompts/last_prompt.json.tmp', '-p', endpoint,
             cwd=os.path.abspath('..'),
             stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
 
@@ -172,6 +172,8 @@ class MainApp(App):
 if __name__ == '__main__':
     Config.set('input', 'mouse', 'mouse,disable_multitouch')
     Config.set('kivy', 'exit_on_escape', '0')
+
+    print(sys.executable)
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(MainApp().async_run('asyncio'))
